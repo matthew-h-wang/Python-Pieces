@@ -1,0 +1,5 @@
+from kivy.uix.stacklayout import StackLayout
+
+class CodeLine(StackLayout):
+	
+	pass

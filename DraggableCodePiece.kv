@@ -1,0 +1,38 @@
+<DraggableCodePiece>:
+	my_label: my_label
+	size_hint: None, None
+	size: my_label.size
+
+	do_rotation: False
+	do_scale: False
+	auto_bring_to_front: True
+
+	on_transform_with_touch: self.opacity = .5
+	on_touch_up: self.opacity = 1
+
+
+
+	Label:
+		canvas.before:
+			Color:
+				rgba: 0, 1, 0, 1
+			Rectangle:
+				pos: self.pos
+				size: self.size
+		id: my_label
+		font_size: 50
+		size: self.texture_size
+		text: root.labeltext
+
+
+<DraggableCodePieceGenerator>:
+	size_hint: None, None
+	on_press: 
+	canvas.before:
+		Color:
+			rgba: 1, 0, 0, 1
+		Rectangle:
+			pos: self.pos
+			size: self.size
+	font_size: 50
+	size: self.texture_size
