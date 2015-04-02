@@ -1,6 +1,6 @@
 from kivy.uix.widget import Widget
 from kivy.uix.stacklayout import StackLayout
-from kivy.uix.gridlayout import GridLayout
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import ObjectProperty
 
@@ -9,7 +9,7 @@ from kivy.lang import Builder
 
 Builder.load_file("CodeSpace.kv")
 
-class CodeSpace(GridLayout):
+class CodeSpace(StackLayout):
 	workspace = ObjectProperty(None)
 
 	def redrawChildren(self, *args) :
@@ -24,3 +24,11 @@ class CodeLine(StackLayout):
 			child.makeDraggableCodePiece()
 
 	workspace = ObjectProperty(None)
+
+class BlockSpace(StackLayout):
+
+	def redrawChildren(self, *args) :
+		for child in self.children :
+			child.clear_widgets()
+			child.makeDraggableCodePiece()
+

@@ -5,7 +5,7 @@ from kivy.uix.button import Button
 from kivy.properties import ObjectProperty
 from kivy.uix.floatlayout import FloatLayout
 from DraggableCodePiece import DraggableCodePiece, DraggableCodePieceGenerator, DraggableCodePiecePlaceholder
-from CodeSpace import CodeLine, CodeSpace
+from CodeSpace import CodeLine, CodeSpace, BlockSpace
 
 
 class Workspace(FloatLayout):
@@ -14,16 +14,24 @@ class Workspace(FloatLayout):
 		super(Workspace, self).__init__(**kw)
 		self.codespace = CodeSpace()
 		self.add_widget(self.codespace)
-		self.codespace.add_widget(CodeLine())
-		codeline = CodeLine()
-		codeline.add_widget(DraggableCodePiecePlaceholder(workspace = self, codespace = self.codespace, start_text = "Hello "))
-		codeline.add_widget(DraggableCodePiecePlaceholder(workspace = self, codespace = self.codespace, start_text = "Goodbye"))
-		self.codespace.add_widget(codeline)
-		self.codespace.redrawChildren()
-		generator = DraggableCodePieceGenerator(workspace = self, codespace = self.codespace, start_text = "Hello World")
-		self.add_widget(generator)
-		generator.makeDraggableCodePiece()
+		for x in range(1, 5) :
+			self.codespace.add_widget(CodeLine())
+#		codeline = CodeLine()
+#		codeline.add_widget(DraggableCodePiecePlaceholder(workspace = self, codespace = self.codespace, start_text = "Hello "))
+#		codeline.add_widget(DraggableCodePiecePlaceholder(workspace = self, codespace = self.codespace, start_text = "Goodbye"))
+#		self.codespace.add_widget(codeline)
+#		self.codespace.redrawChildren()
+		
 
+		self.blockspace = BlockSpace()
+		self.add_widget(self.blockspace)
+
+		generator = DraggableCodePieceGenerator(workspace = self, codespace = self.codespace, start_text = "Hello ")
+		self.blockspace.add_widget(generator)
+		generator = DraggableCodePieceGenerator(workspace = self, codespace = self.codespace, start_text = "World ")
+		self.blockspace.add_widget(generator)
+
+		self.blockspace.redrawChildren()
 
 
 class PythonPiecesApp(App):

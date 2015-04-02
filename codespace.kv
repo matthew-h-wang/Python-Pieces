@@ -1,12 +1,27 @@
 <CodeSpace>:
-	cols: 1
-	size_hint: (.5, 1)
-	pos_hint:{'top':1, 'x':.5}		
+	orientation: 'tb-lr'
+	size_hint: (.7, 1)
+	pos_hint:{'top':1, 'x':.3}
+	height: self.minimum_height		
 
 
 <CodeLine>:
-	
+	height: 30
 	orientation: 'lr-tb'
+	size_hint: (1,None)
+	canvas.after:
+		Color:
+			rgba: .5, .5, .5, 1
+        Line:
+            rectangle: self.x,self.y,self.width,self.height
+
+<BlockSpace>:
+	size_hint: (.3, 1)
+	pos_hint:{'top':1, 'x':0}
+
+	orientation: 'tb-lr'
+
+	spacing: [10,10]
 
 	canvas.after:
 		Color:

@@ -11,7 +11,6 @@ class DraggableCodePiece(Scatter):
 	labeltext = StringProperty('')
 	my_label = ObjectProperty(None)
 
-
 	def __init__(self, codespace, generator, start_text,**kw):
 		super(DraggableCodePiece, self).__init__(**kw)
 		self.labeltext = start_text
@@ -20,6 +19,8 @@ class DraggableCodePiece(Scatter):
 		self.codespace = codespace
 		print "Made codepiece called " + self.labeltext
 
+	def reset_position(self)
+		self.pos = self.generator.pos
 
 	def on_transform_with_touch(self,touch):
 		self.current_touch = touch
@@ -31,6 +32,10 @@ class DraggableCodePiece(Scatter):
 			
 			tx, ty = touch.pos
 			newloc = None
+			# First: has it moved away from the generator?
+			if generator.collide_point(tx, ty) :
+				self.reset_position()
+
 			for child in self.codespace.children :
 				print "looking at codelines"
 				if child.collide_point(tx, ty) :
@@ -56,10 +61,10 @@ class DraggableCodePieceGenerator(Label):
 		self.text = start_text
 
 	def registerDropped(self, elsewhere=None):
+		self.clear_widgets()
 		self.makeDraggableCodePiece()
 
 	def makeDraggableCodePiece(self, *args):
-		self.clear_widgets()
 		self.add_widget(DraggableCodePiece(generator = self, start_text = self.text, 
 			codespace = self.codespace, pos = self.pos))
 
