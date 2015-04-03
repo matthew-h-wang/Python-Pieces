@@ -2,6 +2,11 @@
 
 Workspace:
 	id: workspace
+	Button:
+		size_hint: (1, .2)
+		pos_hint: {'x':0, 'y':0}
+		text: "print code to console"
+		on_press: print root.codespace.getWholeText()
 
 
 # for debugging purposes

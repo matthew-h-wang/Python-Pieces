@@ -99,6 +99,10 @@ class DragSilhouette(Scatter):
 					self.source.parent.remove_widget(self.source)
 					newloc.add_widget(self.source, index = index)
 
+		# if dropped elsewhere, remove source if from codespace
+		else :
+			if not self.from_generator:
+				self.source.parent.remove_widget(self.source)
 
 		self.source.remove_widget(self)
 		return super(DragSilhouette, self).on_touch_up(touch)

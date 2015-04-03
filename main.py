@@ -8,7 +8,7 @@ from CodePiece import CodePiece, CodePieceGenerator, DragSilhouette
 from CodeSpace import CodeLine, CodeSpace, BlockSpace
 
 
-startblocks = ["print ", "\"Hello World!\"", " var ", " = " ]
+startblocks = ["print ", "\"Hello World!\"", " var    ", " = " ,"    "]
 
 class Workspace(FloatLayout):
 	fontsize = NumericProperty(20)
@@ -19,13 +19,6 @@ class Workspace(FloatLayout):
 		self.add_widget(self.codespace)
 		for x in range(1, 15) :
 			self.codespace.add_widget(CodeLine())
-
-#		codeline = CodeLine()
-#		codeline.add_widget(DraggableCodePiecePlaceholder(workspace = self, codespace = self.codespace, start_text = "Hello "))
-#		codeline.add_widget(DraggableCodePiecePlaceholder(workspace = self, codespace = self.codespace, start_text = "Goodbye"))
-#		self.codespace.add_widget(codeline)
-#		self.codespace.redrawChildren()
-		
 
 		self.blockspace = BlockSpace()
 		self.add_widget(self.blockspace)
