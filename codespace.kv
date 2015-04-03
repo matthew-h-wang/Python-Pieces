@@ -7,15 +7,52 @@
 
 
 <CodeLine>:
-	height: 30
+	height: self.fontsize + 2 * self.spacing[1]
+	on_minimum_height: self.height = max(self.minimum_height, self.fontsize + 2 * self.spacing[1])
 	spacing: [2,2]
 	orientation: 'lr-tb'
-	size_hint: (1,None)
+	size_hint_y: None
 	canvas.after:
 		Color:
 			rgba: .5, .5, .5, 1
         Line:
             rectangle: self.x,self.y,self.width,self.height
+
+
+
+<CodeLinePlus>:
+	draghandle: draghandle
+	newline: newline
+	codeline: codeline
+	removeline: removeline
+
+	orientation: 'horizontal'
+	height: self.codeline.height
+	size_hint: (1,None)
+	Button:
+		id: draghandle
+		text:"D"
+		size_hint_x: None
+		height: root.codeline.height
+		width: root.fontsize
+	Button:
+		id: newline
+		text: "V"
+		size_hint_x: None
+		height: root.codeline.height
+		width: root.fontsize
+
+	CodeLine:
+		id: codeline
+		fontsize: root.fontsize
+
+	Button:
+		id: removeline
+		text: "X"
+		size_hint_x: None
+		height: root.codeline.height
+		width: root.fontsize
+		on_release: root.remove_self()
 
 <BlockSpace>:
 	size_hint: (.3, 1)
@@ -23,7 +60,7 @@
 
 	orientation: 'tb-lr'
 
-	spacing: [10,10]
+	spacing: [0,10]
 
 	canvas.after:
 		Color:

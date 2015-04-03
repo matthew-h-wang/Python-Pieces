@@ -1,5 +1,7 @@
 #:kivy 1.0.9
 
+
+
 <CodePieceGenerator>:
 	size_hint: None, None
 	canvas.before:
@@ -8,7 +10,6 @@
 		Rectangle:
 			pos: self.pos
 			size: self.size
-	font_size: 20
 	size: self.texture_size
 
 <DragSilhouette>:
@@ -31,6 +32,7 @@
 				size: self.size
 		id: my_label
 		font_size: root.font_size
+		font_name: root.font_name
 		size: self.texture_size
 		text: root.labeltext
 

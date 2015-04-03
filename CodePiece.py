@@ -5,6 +5,12 @@ from kivy.uix.behaviors import ButtonBehavior
 from kivy.properties import StringProperty, NumericProperty, ObjectProperty
 from kivy.uix.label import Label
 from kivy.lang import Builder
+from kivy.core.text import LabelBase
+import settings
+
+for font in settings.KIVY_FONTS:
+	LabelBase.register(**font)
+
 
 Builder.load_file("CodePiece.kv")
 
@@ -17,6 +23,8 @@ class CodePieceGenerator(Label):
 		self.workspace = workspace
 		self.codespace = codespace
 		self.text = start_text
+		self.font_size = workspace.fontsize
+		self.font_name = workspace.fontname
 
 	def on_touch_down(self, touch):
 		if self.collide_point(*touch.pos):
@@ -47,6 +55,7 @@ class DragSilhouette(Scatter):
 	labeltext = StringProperty('')
 	my_label = ObjectProperty(None)
 	font_size = NumericProperty(20)
+	font_name = StringProperty('')
 
 	def __init__(self, source, from_generator, **kw):
 		super(DragSilhouette, self).__init__(**kw)
@@ -55,6 +64,7 @@ class DragSilhouette(Scatter):
 		self.codespace = source.codespace
 		self.from_generator = from_generator
 		self.font_size = source.font_size
+		self.font_name = source.font_name
 
 	def on_touch_up(self,touch):
 		tx, ty = touch.x, touch.y
@@ -68,18 +78,18 @@ class DragSilhouette(Scatter):
 
 		# Next, check if being dropped in the codespace
 		newloc = None
-		for child in self.codespace.children :
-			if child.collide_point(tx, ty) :
-				newloc = child
+		for codelineplus in self.codespace.children :
+			if codelineplus.codeline.collide_point(tx, ty) :
+				newloc = codelineplus.codeline
 				break
 
 		#If dropped in codespace, either create new piece or move source piece 
 		if newloc:	
 
-			# piece indices goes from right to left
+			# piece indices goes from bottom to top, right to left
 			index = 0
 			for piece in newloc.children :
-				if tx < piece.right:
+				if ty > piece.top or tx < piece.right:
 					index += 1 
 				else:
 					break

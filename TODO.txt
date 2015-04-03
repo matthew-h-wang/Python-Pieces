@@ -1,22 +1,25 @@
 Drag-and-drop UI:
 
 drop position visual cues?
-handle code line overflow -- how?
+handle code line overflow -- how? (change layout?)
 
-change font to monospace
+change font to monospace CHECK
 variable font size
 variable colors
 
-scrollable code area
+?scrollable code area - dynamic resize (change layout?)
 add/remove code lines
 code line numbers
 
-scrollable piece area
+scrollable piece area - dynamic resize (change layout?)
 dynamic piece making feature
 
 "limited number" generators
 
 special "tab" piece
+
+internal pieces
+next-to relationships
 
 
 File system:
