@@ -8,7 +8,7 @@ from CodePiece import CodePiece, CodePieceGenerator, DragSilhouette
 from CodeSpace import CodeLine, CodeSpace, BlockSpace
 
 
-startblocks = ["print ", "\"Hello World!\"", " var    ", " = " ,"    "]
+startblocks = ["print ", "\"Hello World!\"", " var ", " = " ,"--->"]
 
 class Workspace(FloatLayout):
 	fontsize = NumericProperty(20)

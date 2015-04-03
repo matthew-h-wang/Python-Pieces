@@ -1,0 +1,32 @@
+Drag-and-drop UI:
+
+drop position visual cues?
+handle code line overflow -- how?
+
+change font to monospace
+variable font size
+variable colors
+
+scrollable code area
+add/remove code lines
+code line numbers
+
+scrollable piece area
+dynamic piece making feature
+
+"limited number" generators
+
+special "tab" piece
+
+
+File system:
+
+File format
+Saving/Loading files via file system
+Filename displayed at top
+"compiling" to python
+
+"Shell" emulator:
+Popup?
+basic argument /stdin inputs
+printing output
