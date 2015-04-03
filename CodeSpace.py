@@ -33,13 +33,21 @@ class CodeLinePlus(BoxLayout):
 	def getLineText(self):
 		return self.codeline.getLineText()	
 
-	def 
-
-	def remove_self(self, *args):
+	def remove_line(self, *args):
 		tx, ty = self.removeline.last_touch.pos
 		if (self.removeline.collide_point(tx, ty)):
 			self.parent.remove_widget(self)
 
+	def add_line(self, *args):
+		tx, ty = self.newline.last_touch.pos
+		if (self.newline.collide_point(tx, ty)):
+			index = 0
+			for codelineplus in self.parent.children:
+				if codelineplus != self:
+					index += 1
+				else:
+					break
+			self.parent.add_widget(CodeLinePlus(fontsize=self.fontsize), index)
 
 
 class CodeLine(StackLayout):

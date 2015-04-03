@@ -41,6 +41,7 @@
 		size_hint_x: None
 		height: root.codeline.height
 		width: root.fontsize
+		on_release: root.add_line()
 
 	CodeLine:
 		id: codeline
@@ -52,7 +53,7 @@
 		size_hint_x: None
 		height: root.codeline.height
 		width: root.fontsize
-		on_release: root.remove_self()
+		on_release: root.remove_line()
 
 <BlockSpace>:
 	size_hint: (.3, 1)
