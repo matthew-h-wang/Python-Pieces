@@ -17,24 +17,29 @@ class DraggableCodePiece(Scatter):
 		self.generator = generator
 		self.current_touch = None
 		self.codespace = codespace
+		self.reset_position()
 		print "Made codepiece called " + self.labeltext
 
-	def reset_position(self)
+	def reset_position(self):
+		print "reset_position called"
 		self.pos = self.generator.pos
+		print "New position" + str(self.pos)
 
 	def on_transform_with_touch(self,touch):
 		self.current_touch = touch
 		return super(DraggableCodePiece, self).on_transform_with_touch(touch)
 
 	def on_touch_up(self,touch):
+		print "on_touch_up from DraggableCodePiece called"
 		if touch == self.current_touch :
 			self.current_touch = None
 			
 			tx, ty = touch.pos
 			newloc = None
 			# First: has it moved away from the generator?
-			if generator.collide_point(tx, ty) :
+			if self.generator.collide_point(tx, ty) :
 				self.reset_position()
+				return super(DraggableCodePiece, self).on_touch_up(touch)
 
 			for child in self.codespace.children :
 				print "looking at codelines"
@@ -43,11 +48,12 @@ class DraggableCodePiece(Scatter):
 					newloc = child
 					break
 
-			self.generator.registerDropped(elsewhere=newloc)
-			if newloc :
+			if newloc:
 				newloc.add_widget(DraggableCodePiecePlaceholder(workspace=self.generator.workspace,codespace=self.codespace, start_text=self.labeltext))
-				newloc.redrawChildren()
-						
+				print "dude why isn't this working"
+				self.generator.registerDropped()
+
+		self.reset_position()
 		return super(DraggableCodePiece, self).on_touch_up(touch)
 
 	
@@ -55,25 +61,28 @@ class DraggableCodePieceGenerator(Label):
 	workspace = ObjectProperty(None)
 
 	def __init__(self, workspace, codespace, start_text,**kw):
+		print "constructor called from DraggableCodePieceGenerator"
+
 		super(DraggableCodePieceGenerator, self).__init__(**kw)
 		self.workspace = workspace
 		self.codespace = codespace
 		self.text = start_text
-
-	def registerDropped(self, elsewhere=None):
-		self.clear_widgets()
 		self.makeDraggableCodePiece()
 
+	def registerDropped(self, elsewhere=None):
+		print "registerDropped called from DraggableCodePieceGenerator"
+		pass
+
 	def makeDraggableCodePiece(self, *args):
-		self.add_widget(DraggableCodePiece(generator = self, start_text = self.text, 
-			codespace = self.codespace, pos = self.pos))
+		print "makeDraggableCodePiece called DraggableCodePieceGenerator"
+		newpiece =	DraggableCodePiece(generator = self, start_text = self.text, 
+			codespace = self.codespace, pos = self.pos)
+		#self.bind(pos=newpiece.reset_position())
+		self.add_widget(newpiece)
 
 class DraggableCodePiecePlaceholder(DraggableCodePieceGenerator):
 
 	def registerDropped(self, elsewhere=None):
-		if not elsewhere:
-			self.makeDraggableCodePiece()
-		else:
-			self.clear_widgets()
-			self.parent.remove_widget(self)
+		print "makeDraggableCodePiece called from DraggableCodePiecePlaceholder"
 
+		self.parent.remove_widget(self)

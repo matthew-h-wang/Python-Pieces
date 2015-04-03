@@ -1,4 +1,4 @@
-<DraggableCodePiece>:
+<DragSilhouette>:
 	my_label: my_label
 	size_hint: None, None
 	size: my_label.size
@@ -7,10 +7,7 @@
 	do_scale: False
 	auto_bring_to_front: True
 
-	on_transform_with_touch: self.opacity = .5
-	on_touch_up: self.opacity = 1
-
-
+	opacity: .5
 
 	Label:
 		canvas.before:
@@ -25,9 +22,8 @@
 		text: root.labeltext
 
 
-<DraggableCodePieceGenerator>:
+<CodePieceGenerator>:
 	size_hint: None, None
-#	on_pos: print self.text + "repositioning to " + str(self.pos)
 	canvas.before:
 		Color:
 			rgba: 1, 0, 0, 1
