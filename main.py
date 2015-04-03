@@ -2,19 +2,22 @@ from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.uix.scatter import Scatter
 from kivy.uix.button import Button 
-from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty, NumericProperty
 from kivy.uix.floatlayout import FloatLayout
 from CodePiece import CodePiece, CodePieceGenerator, DragSilhouette
 from CodeSpace import CodeLine, CodeSpace, BlockSpace
 
 
+startblocks = ["print ", "\"Hello World!\"", " var ", " = " ]
+
 class Workspace(FloatLayout):
+	fontsize = NumericProperty(20)
 
 	def __init__(self, **kw):
 		super(Workspace, self).__init__(**kw)
 		self.codespace = CodeSpace()
 		self.add_widget(self.codespace)
-		for x in range(1, 5) :
+		for x in range(1, 15) :
 			self.codespace.add_widget(CodeLine())
 
 #		codeline = CodeLine()
@@ -27,12 +30,10 @@ class Workspace(FloatLayout):
 		self.blockspace = BlockSpace()
 		self.add_widget(self.blockspace)
 
-		generator = CodePieceGenerator(workspace = self, codespace = self.codespace, start_text = "Hello ")
-		self.blockspace.add_widget(generator)
-		print "first generator added"
-		generator2 = CodePieceGenerator(workspace = self, codespace = self.codespace, start_text = "World ")
-		self.blockspace.add_widget(generator2)
-
+		for x in startblocks:
+			generator = CodePieceGenerator(workspace = self, codespace = self.codespace, start_text = x)
+			self.blockspace.add_widget(generator)
+		
 class PythonPiecesApp(App):
 	pass  
 

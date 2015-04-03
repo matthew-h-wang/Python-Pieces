@@ -1,3 +1,16 @@
+#:kivy 1.0.9
+
+<CodePieceGenerator>:
+	size_hint: None, None
+	canvas.before:
+		Color:
+			rgba: 0, 0, 1, 1
+		Rectangle:
+			pos: self.pos
+			size: self.size
+	font_size: 20
+	size: self.texture_size
+
 <DragSilhouette>:
 	my_label: my_label
 	size_hint: None, None
@@ -12,23 +25,12 @@
 	Label:
 		canvas.before:
 			Color:
-				rgba: 0, 1, 0, 1
+				rgba: 0, 0, 1, 1
 			Rectangle:
 				pos: self.pos
 				size: self.size
 		id: my_label
-		font_size: 20
+		font_size: root.font_size
 		size: self.texture_size
 		text: root.labeltext
 
-
-<CodePieceGenerator>:
-	size_hint: None, None
-	canvas.before:
-		Color:
-			rgba: 1, 0, 0, 1
-		Rectangle:
-			pos: self.pos
-			size: self.size
-	font_size: 20
-	size: self.texture_size

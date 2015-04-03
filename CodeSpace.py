@@ -13,23 +13,10 @@ Builder.load_file("CodeSpace.kv")
 class CodeSpace(StackLayout):
 	workspace = ObjectProperty(None)
 
-#	def redrawChildren(self, *args) :
-#		for child in self.children :
-#			child.redrawChildren()
-
 class CodeLine(StackLayout):
-
-#	def redrawChildren(self, *args) :
-#		for child in self.children :
-#			child.clear_widgets()
-#			child.makeDraggableCodePiece()
-
 	workspace = ObjectProperty(None)
 
 class BlockSpace(StackLayout):
 	workspace = ObjectProperty(None)
 
-#	def redrawChildren(self, *args) :
-#		for child in self.children :
-#			child.clear_widgets()
-#			child.makeDraggableCodePiece()
+

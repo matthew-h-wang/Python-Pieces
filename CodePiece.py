@@ -2,7 +2,7 @@
 from kivy.uix.widget import Widget
 from kivy.uix.scatter import Scatter
 from kivy.uix.behaviors import ButtonBehavior
-from kivy.properties import StringProperty, ObjectProperty
+from kivy.properties import StringProperty, NumericProperty, ObjectProperty
 from kivy.uix.label import Label
 from kivy.lang import Builder
 
@@ -10,6 +10,7 @@ Builder.load_file("CodePiece.kv")
 
 class CodePieceGenerator(Label):
 	workspace = ObjectProperty(None)
+
 
 	def __init__(self, workspace, codespace, start_text,**kw):
 		super(CodePieceGenerator, self).__init__(**kw)
@@ -32,30 +33,28 @@ class CodePieceGenerator(Label):
 
 	def getDragSilhouette(self):
 		return DragSilhouette(source = self, 
-			start_text = self.text,
 			from_generator = True,
-			codespace = self.codespace, 
 			pos = self.pos)
 
 class CodePiece(CodePieceGenerator):
 
 	def getDragSilhouette(self):
 		return DragSilhouette(source = self, 
-			start_text = self.text,
 			from_generator = False,
-			codespace = self.codespace, 
 			pos = self.pos)
 
 class DragSilhouette(Scatter):
 	labeltext = StringProperty('')
 	my_label = ObjectProperty(None)
+	font_size = NumericProperty(20)
 
-	def __init__(self, codespace, source, from_generator, start_text,**kw):
+	def __init__(self, source, from_generator, **kw):
 		super(DragSilhouette, self).__init__(**kw)
-		self.labeltext = start_text
 		self.source = source
-		self.codespace = codespace
+		self.labeltext = source.text
+		self.codespace = source.codespace
 		self.from_generator = from_generator
+		self.font_size = source.font_size
 
 	def on_touch_up(self,touch):
 		tx, ty = touch.x, touch.y
@@ -76,11 +75,30 @@ class DragSilhouette(Scatter):
 
 		#If dropped in codespace, either create new piece or move source piece 
 		if newloc:	
+
+			# piece indices goes from right to left
+			index = 0
+			for piece in newloc.children :
+				if tx < piece.right:
+					index += 1 
+				else:
+					break
+
 			if self.from_generator:
-				newloc.add_widget(CodePiece(workspace=self.source.workspace,codespace=self.codespace, start_text=self.labeltext))
+				newloc.add_widget(CodePiece(workspace=self.source.workspace,
+					codespace=self.codespace,
+					start_text=self.labeltext),
+					index = index)
 			else :
-				self.source.parent.remove_widget(self.source)
-				newloc.add_widget(self.source)
+				# moving within current line to the left
+				if (newloc == self.source.parent) and (tx < self.source.x) :
+					self.source.parent.remove_widget(self.source)
+					newloc.add_widget(self.source, index = (index - 1))
+				# moving within current line to the right, or to other line
+				else:
+					self.source.parent.remove_widget(self.source)
+					newloc.add_widget(self.source, index = index)
+
 
 		self.source.remove_widget(self)
 		return super(DragSilhouette, self).on_touch_up(touch)
