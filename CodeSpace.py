@@ -35,6 +35,8 @@ class CodeLinePlus(BoxLayout):
 
 	def remove_line(self, *args):
 		tx, ty = self.removeline.last_touch.pos
+		if len(self.parent.children) == 1:
+			return 
 		if (self.removeline.collide_point(tx, ty)):
 			self.parent.remove_widget(self)
 
@@ -51,17 +53,20 @@ class CodeLinePlus(BoxLayout):
 	
 	def move_line(self, *args):
 		tx, ty = self.draghandle.last_touch.pos
+		if not self.parent.collide_point(tx, ty):
+			return
 		if (self.collide_point(tx, ty)):
 			return
 		index = 0
 		for codelineplus in self.parent.children:
 			if codelineplus.collide_point(tx, ty):
+				parent = self.parent
+				parent.remove_widget(self)
+				parent.add_widget(self, index=index)
 				break
 			else:
 				index += 1
-		parent = self.parent
-		parent.remove_widget(self)
-		parent.add_widget(self, index=index)
+
 
 
 class CodeLine(StackLayout):
