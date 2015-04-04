@@ -23,50 +23,77 @@ class CodeSpace(StackLayout):
 			linenum -= 1
 		return text
 
+	def updateLineNums(self):
+		linenum = len(self.children)
+		for child in self.children:
+			child.linenum = linenum
+			linenum -= 1
+
+	#remove given line, unless it's the last one
+	def remove_line(self, line):
+		if len(self.children) == 1:
+			return
+		self.remove_widget(line)
+		self.updateLineNums()
+
+	#add a new empty line after given line
+	def add_line_after(self, line):
+		index = 0
+		for codelineplus in self.children:
+			if codelineplus != line:
+				index += 1
+			else:
+				break
+		self.add_widget(CodeLinePlus(fontsize=self.fontsize), index)
+		self.updateLineNums()
+
+	#move the given line to a different position based on touch position
+	def move_line(self, line, touch):
+		tx, ty = touch.pos		
+		index = 0
+		for codelineplus in self.children:
+			if codelineplus.collide_point(tx, ty):
+				self.remove_widget(line)
+				self.add_widget(line, index=index)
+				self.updateLineNums()
+				break
+			else:
+				index += 1
+
+
+
 class CodeLinePlus(BoxLayout):
 	codeline = ObjectProperty(None)
 	draghandle = ObjectProperty(None)
-	newline = ObjectProperty(None)
+#	newline = ObjectProperty(None)
 	removeline = ObjectProperty(None)
 	fontsize = NumericProperty(30)
+	linenum = NumericProperty(0)
 
 	def getLineText(self):
 		return self.codeline.getLineText()	
 
 	def remove_line(self, *args):
 		tx, ty = self.removeline.last_touch.pos
-		if len(self.parent.children) == 1:
-			return 
 		if (self.removeline.collide_point(tx, ty)):
-			self.parent.remove_widget(self)
+			self.parent.remove_line(self)
 
-	def add_line(self, *args):
-		tx, ty = self.newline.last_touch.pos
-		if (self.newline.collide_point(tx, ty)):
-			index = 0
-			for codelineplus in self.parent.children:
-				if codelineplus != self:
-					index += 1
-				else:
-					break
-			self.parent.add_widget(CodeLinePlus(fontsize=self.fontsize), index)
+#	def add_line(self, *args):
+#		tx, ty = self.newline.last_touch.pos
+#		if (self.newline.collide_point(tx, ty)):
+#			self.parent.add_line_after(self)
+
+	def tap_add(self, *args):
+		if (self.draghandle.last_touch.is_triple_tap):
+			self.parent.add_line_after(self)
 	
-	def move_line(self, *args):
+	def drag_move(self, *args):
 		tx, ty = self.draghandle.last_touch.pos
-		if not self.parent.collide_point(tx, ty):
-			return
+#		if not self.parent.collide_point(tx, ty):
+#			return
 		if (self.collide_point(tx, ty)):
 			return
-		index = 0
-		for codelineplus in self.parent.children:
-			if codelineplus.collide_point(tx, ty):
-				parent = self.parent
-				parent.remove_widget(self)
-				parent.add_widget(self, index=index)
-				break
-			else:
-				index += 1
-
+		self.parent.move_line(self, self.draghandle.last_touch)
 
 
 class CodeLine(StackLayout):

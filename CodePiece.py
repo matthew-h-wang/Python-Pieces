@@ -18,19 +18,19 @@ class CodePieceGenerator(Label):
 	workspace = ObjectProperty(None)
 
 
-	def __init__(self, workspace, codespace, start_text,**kw):
+	def __init__(self, workspace, start_text,**kw):
 		super(CodePieceGenerator, self).__init__(**kw)
 		self.workspace = workspace
-		self.codespace = codespace
-		self.text = start_text
+		self.codespace = workspace.codespace
 		self.font_size = workspace.fontsize
 		self.font_name = workspace.fontname
+		self.text = start_text
 
 	def on_touch_down(self, touch):
 		if self.collide_point(*touch.pos):
 
 			ds = self.getDragSilhouette()
-			self.add_widget(ds)
+			self.workspace.parent.add_widget(ds)
 			#hacky part: tacken from scatter.py , on_touch_down line 505-508
 			ds._bring_to_front()
 			touch.grab(ds)
@@ -73,7 +73,7 @@ class DragSilhouette(Scatter):
 
 		# First: has it moved away from the generator?
 		if self.source.collide_point(tx, ty) :
-			self.source.remove_widget(self)
+			self.parent.remove_widget(self)
 			return super(DragSilhouette, self).on_touch_up(touch)
 
 		# Next, check if being dropped in the codespace
@@ -96,7 +96,6 @@ class DragSilhouette(Scatter):
 
 			if self.from_generator:
 				newloc.add_widget(CodePiece(workspace=self.source.workspace,
-					codespace=self.codespace,
 					start_text=self.labeltext),
 					index = index)
 			else :
@@ -114,5 +113,5 @@ class DragSilhouette(Scatter):
 			if not self.from_generator:
 				self.source.parent.remove_widget(self.source)
 
-		self.source.remove_widget(self)
+		self.parent.remove_widget(self)
 		return super(DragSilhouette, self).on_touch_up(touch)
