@@ -1,20 +1,29 @@
 Drag-and-drop UI:
 
-drop position visual cues?
 handle code line overflow -- how? (change layout?)
 
+
 change font to monospace CHECK
-variable font size
-variable colors
 
-?scrollable code area - dynamic resize (change layout?)
-add/remove code lines
-code line numbers
+add/remove code lines [ CHECK]
+code line numbers [CHECK]
 
-scrollable piece area - dynamic resize (change layout?)
-dynamic piece making feature
+RESTRUCTION DROP SYSTEM SO:
+	drag silhouette always infront  [check]
+
+?scrollable code area - dynamic resize (change layout?) [check]
+scrollable piece area - dynamic resize (change layout?) [check]
 
 "limited number" generators
+	when lines deleted
+	when pieces added/removed
+
+variable font size
+
+dynamic piece making feature
+	variable font and background colors
+
+drop position visual cues?
 
 special "tab" piece
 
@@ -24,10 +33,30 @@ next-to relationships
 
 File system:
 
-File format
+Header: what is on there? Save, load, undo, redo, 
+
+File format:
+	Contains: generator info, codeline info:
+
 Saving/Loading files via file system
+
+File: file.pyp
+Have "original" or "base" version
+"script" to file.py
+
+Original file preservation? Revert button?
+
+
+IMPORTNAT: UNDO and REDO Buttons:
+	Keep stack of previous versions, also stack for "future recent" versions.
+	Every resultive drop action and line deleting sends current version to recent stack, creates new current version from layout, clears "future recent" stack
+	UNDO puts current version on stack for "future recent" versions,  pops recent stack and reads it to current layout
+	REDO pops "future recent" stack, reads it to current layout, moves current version to recent stack.
+
 Filename displayed at top
 "compiling" to python
+
+Nice File Choosing GUI
 
 "Shell" emulator:
 Popup?

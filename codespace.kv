@@ -1,16 +1,15 @@
 #:kivy 1.0.9
 
 <CodeSpace>:
-	orientation: 'tb-lr'
-#	size_hint: (.7, 1)
-#	pos_hint:{'top':1, 'x':.3}		
+	orientation: 'lr-tb'
+	size_hint: (1, None)
+	height: self.minimum_height
 	canvas.before:
 		Color:
 			rgba: 0, 0, 0, 1
 		Rectangle:
 			pos: self.pos
 			size: self.size
-
 
 <CodeLine>:
 	height: self.fontsize + 2 * self.spacing[1]
@@ -67,10 +66,10 @@
 <BlockSpace>:
 #	size_hint: (.3, 1)
 #	pos_hint:{'top':1, 'x':0}
-
-	orientation: 'tb-lr'
-
-	spacing: [0,10]
+	orientation: 'lr-tb'
+	size_hint: (1, None)
+	height: self.minimum_height
+	spacing: [20,10]
 
 	canvas.after:
 		Color:

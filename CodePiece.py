@@ -30,26 +30,30 @@ class CodePieceGenerator(Label):
 		if self.collide_point(*touch.pos):
 
 			ds = self.getDragSilhouette()
-			self.workspace.parent.add_widget(ds)
+			#self.add_widget(ds)
+			#ds.pos = self.workspace.parent.dragcontroller.to_widget(self.x, self.y)
 			#hacky part: tacken from scatter.py , on_touch_down line 505-508
+			self.workspace.parent.dragcontroller.add_widget(ds)
+
 			ds._bring_to_front()
 			touch.grab(ds)
 			ds._touches.append(touch)
-			ds._last_touch_pos[touch] = touch.pos
+			ds._last_touch_pos[touch] = self.to_window(touch.x, touch.y)
+
 			return True
 		return False
 
 	def getDragSilhouette(self):
 		return DragSilhouette(source = self, 
 			from_generator = True,
-			pos = self.pos)
+			pos = self.to_window(self.x, self.y))
 
 class CodePiece(CodePieceGenerator):
 
 	def getDragSilhouette(self):
 		return DragSilhouette(source = self, 
 			from_generator = False,
-			pos = self.pos)
+			pos = self.to_window(self.x, self.y))
 
 class DragSilhouette(Scatter):
 	labeltext = StringProperty('')
@@ -72,24 +76,24 @@ class DragSilhouette(Scatter):
 			return super(DragSilhouette, self).on_touch_up(touch)
 
 		# First: has it moved away from the generator?
-		if self.source.collide_point(tx, ty) :
+		if self.source.collide_point(*self.source.to_widget(tx, ty)) :
 			self.parent.remove_widget(self)
 			return super(DragSilhouette, self).on_touch_up(touch)
 
 		# Next, check if being dropped in the codespace
 		newloc = None
 		for codelineplus in self.codespace.children :
-			if codelineplus.codeline.collide_point(tx, ty) :
+			if codelineplus.codeline.collide_point(*codelineplus.to_widget(tx, ty)) :
 				newloc = codelineplus.codeline
 				break
 
 		#If dropped in codespace, either create new piece or move source piece 
 		if newloc:	
-
+			ntx, nty = newloc.to_widget(tx, ty)
 			# piece indices goes from bottom to top, right to left
 			index = 0
 			for piece in newloc.children :
-				if ty > piece.top or tx < piece.right:
+				if nty > piece.top or (nty > piece.y and ntx < piece.right):
 					index += 1 
 				else:
 					break
@@ -100,7 +104,9 @@ class DragSilhouette(Scatter):
 					index = index)
 			else :
 				# moving within current line to the left
-				if (newloc == self.source.parent) and (tx < self.source.x) :
+				if (newloc == self.source.parent) and \
+						(nty > self.source.top or \
+						(nty > self.source.y and ntx < self.source.x )) :
 					self.source.parent.remove_widget(self.source)
 					newloc.add_widget(self.source, index = (index - 1))
 				# moving within current line to the right, or to other line

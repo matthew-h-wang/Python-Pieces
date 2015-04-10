@@ -1,9 +1,16 @@
 #:kivy 1.0.9
 
 Appspace:
+	dragcontroller: dragcontroller
 	Workspace:
+	FileOpen:
+		size_hint: (None, None)
+	DragController:
+		id: dragcontroller
+
 
 <Workspace>:
+	size_hint: (1,1)
 	orientation: 'horizontal'
 
 #	Button:
@@ -24,3 +31,9 @@ Appspace:
 #            rectangle: self.x+1,self.y+1,self.width-1,self.height-1
 #            dash_offset: 5
 #            dash_length: 3
+
+<ScrollView>:
+	size_hint: (1,1)
+	do_scroll_x: False
+	do_scroll_y: True
+	scroll_timeout: 50
