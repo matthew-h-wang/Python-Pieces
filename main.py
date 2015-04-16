@@ -10,9 +10,9 @@ from kivy.uix.scrollview import ScrollView
 from CodePiece import CodePiece, CodePieceGenerator, CodePieceGeneratorLimited, DragSilhouette
 from CodeSpace import CodeLine, CodeSpace, BlockSpace, CodeLinePlus
 from FileSaveLoad import MenuBar
+from BlockMaker import BlockMaker
 
-startblocks = ["print ", "\"Hello World!\"", " var ", " = " ,"--->","print ", "\"Hello World!\"", " var ", " = " ,"--->","print ", "\"Hello World!\"", " var ", " = " ,"--->","print ", "\"Hello World!\"", " var ", " = " ,"--->","print ", "\"Hello World!\"", " var ", " = " ,"--->"]
-
+startblocks = ["print ", "\"Hello World!\"", " var ", " = " ,"--->"]
 class Appspace(FloatLayout):
 	dragcontroller = ObjectProperty(None)
 	workspace = ObjectProperty(None)
@@ -25,16 +25,19 @@ class Workspace(BoxLayout):
 	fontname = StringProperty('Consolas')
 	codespace = ObjectProperty(None)
 	blockspace = ObjectProperty(None)
-
+	blockmaker = ObjectProperty(None)
 	def __init__(self, **kw):
 		super(Workspace, self).__init__(**kw)
 
 		self.blockspace = BlockSpace(workspace = self)
-		#self.blockspace.bind(minimum_height=self.blockspace.setter('height'))
 		splitter = Splitter(sizable_from = 'bottom')
 		scrollerleft = ScrollView()
 		scrollerleft.add_widget(self.blockspace)
-		splitter.add_widget(scrollerleft)
+		box = BoxLayout(orientation = 'vertical')
+		box.add_widget(scrollerleft)
+		self.blockmaker = BlockMaker(workspace = self)
+		box.add_widget()
+		splitter.add_widget(box)
 		self.add_widget(splitter)
 
 		self.codespace = CodeSpace(workspace = self)

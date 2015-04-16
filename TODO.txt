@@ -26,6 +26,8 @@ dynamic piece making feature
 	variable font and background colors
 	specify next-to relationships
 
+drop-to-remove-generator area
+
 special "tab" piece
 
 internal pieces
@@ -46,6 +48,7 @@ File: file.pyp
 Template File: file.pypt
 "script" to file.py
 
+Insert in larger file?
 
 Original file preservation? Revert button?
 

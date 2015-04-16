@@ -1,0 +1,14 @@
+#:kivy 1.0.9
+
+<BlockMaker>:
+	orientation: 'vertical'
+	textinput: textinput
+	TextInput:
+		id: textinput
+		multiline: False
+	BoxLayout:
+		orientation: 'horizontal'
+		Button: 
+			text: "Make block"
+			on_press: root.makeBlock()
+<ColorDropDown>:
