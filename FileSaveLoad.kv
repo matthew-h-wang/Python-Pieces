@@ -1,7 +1,17 @@
 #:kivy 1.0.9
 
-<FileOpen>
-	height: 10
-	width: 10
-	text: "S"
-	on_press: self.getOpenFileName()
+<MenuBar>:
+	orientation: 'horizontal'
+
+	Button:
+		text: "save"
+		on_press: root.saveCurrentVersion()
+	Button:
+		text: "load"
+		on_press: root.loadVersion()
+	Button:
+		text: "undo"
+		on_press: root.undoLast()
+	Button:
+		text: "redo"
+		on_press: root.redoLast()

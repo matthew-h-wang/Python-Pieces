@@ -1,0 +1,25 @@
+Save Process:
+Go through pieces, label each with number and put in dictionary (generator, idnum). Print number with data
+
+Go through code area, each line: document each list with id nums using dictionary
+
+Pieces:
+#idnum max_count (bkgd_color text_color adjacency_rules) text
+
+
+CodeArea:
+#linenum id id id id id
+
+
+Load process: create Piece area, create dictionary of id nums and generators (idnum, generator). 
+
+Go through code area, create each line: populate with codepieces made from generators
+
+
+
+Undo, Redo:
+Two stacks of versions, undoStack and redoStack
+
+Every change, evaluate current version and push version onto redoStack, remove oldest versions if at limit
+Every undo, evaluate current version and put onto redoStack, pop undoStack and make current version
+Every redo, evaluate current version and put onto undoStack, pop redoStack and make current version

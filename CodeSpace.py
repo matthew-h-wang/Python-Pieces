@@ -5,15 +5,18 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.properties import NumericProperty, ObjectProperty
 from kivy.uix.button import Button
-
-from DraggableCodePiece import DraggableCodePiece, DraggableCodePieceGenerator, DraggableCodePiecePlaceholder
+from CodePiece import CodePiece, CodePieceGenerator, CodePieceGeneratorLimited
 from kivy.lang import Builder
 
 Builder.load_file("CodeSpace.kv")
 
 class CodeSpace(StackLayout):
 	workspace = ObjectProperty(None)
-	fontsize = NumericProperty(30)
+
+	def __init__(self, workspace, **kw):
+		super(CodeSpace, self).__init__(**kw)
+		self.workspace = workspace
+
 
 	def getWholeText(self):
 		text = ''
@@ -22,6 +25,13 @@ class CodeSpace(StackLayout):
 			text = str(linenum) + ": " + child.getLineText() + '\n' + text
 			linenum -= 1
 		return text
+
+	def getCode(self):
+		text = ''
+		for child in self.children:
+			text = child.getLineText() + '\n' + text
+		return text
+
 
 	def updateLineNums(self):
 		linenum = len(self.children)
@@ -34,7 +44,11 @@ class CodeSpace(StackLayout):
 		if len(self.children) == 1:
 			return
 		self.remove_widget(line)
+		for piece in line.codeline.children:
+			piece.whenRemoved()
 		self.updateLineNums()
+
+		self.workspace.updateVersion()
 
 	#add a new empty line after given line
 	def add_line_after(self, line):
@@ -44,8 +58,11 @@ class CodeSpace(StackLayout):
 				index += 1
 			else:
 				break
-		self.add_widget(CodeLinePlus(fontsize=self.fontsize), index)
+		self.add_widget(CodeLinePlus(fontsize=self.workspace.fontsize), index)
 		self.updateLineNums()
+
+		self.workspace.updateVersion()
+
 
 	#move the given line to a different position based on touch position
 	def move_line(self, line, touch):
@@ -59,6 +76,9 @@ class CodeSpace(StackLayout):
 				break
 			else:
 				index += 1
+
+		self.workspace.updateVersion()
+
 
 
 
@@ -108,6 +128,8 @@ class CodeLine(StackLayout):
 
 class BlockSpace(StackLayout):
 	workspace = ObjectProperty(None)
-	fontsize = NumericProperty(30)
+	def __init__(self, workspace, **kw):
+		super(BlockSpace, self).__init__(**kw)
+		self.workspace = workspace
 
 

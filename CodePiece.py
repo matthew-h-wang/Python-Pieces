@@ -25,6 +25,7 @@ class CodePieceGenerator(Label):
 		self.font_size = workspace.fontsize
 		self.font_name = workspace.fontname
 		self.text = start_text
+		self.count = -1
 
 	def on_touch_down(self, touch):
 		if self.collide_point(*touch.pos):
@@ -45,15 +46,60 @@ class CodePieceGenerator(Label):
 
 	def getDragSilhouette(self):
 		return DragSilhouette(source = self, 
-			from_generator = True,
+			generator = self,
+			piece = None,
 			pos = self.to_window(self.x, self.y))
 
+	def reclaimPiece(self):
+		pass
+
+	def decountPiece(self):
+		pass
+class CodePieceGeneratorLimited(CodePieceGenerator):
+	count = NumericProperty(0)
+
+	def __init__(self, workspace, start_text, max_count, **kw):
+		super(CodePieceGenerator, self).__init__(**kw)
+		self.workspace = workspace
+		self.codespace = workspace.codespace
+		self.font_size = workspace.fontsize
+		self.font_name = workspace.fontname
+		self.text = start_text
+		self.count = max_count
+
+
+	def reclaimPiece(self):
+		self.count += 1
+
+	def decountPiece(self):
+		self.count -= 1
+
+	def on_touch_down(self, touch):
+		if self.count > 0:
+			super(CodePieceGeneratorLimited, self).on_touch_down(touch)
+
 class CodePiece(CodePieceGenerator):
+	def __init__(self, generator,**kw):
+		super(CodePieceGenerator, self).__init__(**kw)
+		self.generator = generator
+		self.workspace = generator.workspace
+		self.codespace = generator.codespace
+		self.font_size = generator.font_size
+		self.font_name = generator.font_name
+		self.text = generator.text
+		self.generator.decountPiece()
+
 
 	def getDragSilhouette(self):
 		return DragSilhouette(source = self, 
-			from_generator = False,
+			generator = self.generator,
+			piece = self,
 			pos = self.to_window(self.x, self.y))
+
+	def whenRemoved(self):
+		self.generator.reclaimPiece()
+
+
 
 class DragSilhouette(Scatter):
 	labeltext = StringProperty('')
@@ -61,12 +107,14 @@ class DragSilhouette(Scatter):
 	font_size = NumericProperty(20)
 	font_name = StringProperty('')
 
-	def __init__(self, source, from_generator, **kw):
+	def __init__(self, source, generator, piece, **kw):
 		super(DragSilhouette, self).__init__(**kw)
+		self.workspace = source.workspace
 		self.source = source
 		self.labeltext = source.text
 		self.codespace = source.codespace
-		self.from_generator = from_generator
+		self.generator = generator
+		self.piece = piece
 		self.font_size = source.font_size
 		self.font_name = source.font_name
 
@@ -75,7 +123,7 @@ class DragSilhouette(Scatter):
 		if not touch.grab_current == self:
 			return super(DragSilhouette, self).on_touch_up(touch)
 
-		# First: has it moved away from the generator?
+		# First: has it moved away from the source (piece or generator)?
 		if self.source.collide_point(*self.source.to_widget(tx, ty)) :
 			self.parent.remove_widget(self)
 			return super(DragSilhouette, self).on_touch_up(touch)
@@ -98,26 +146,33 @@ class DragSilhouette(Scatter):
 				else:
 					break
 
-			if self.from_generator:
-				newloc.add_widget(CodePiece(workspace=self.source.workspace,
-					start_text=self.labeltext),
+			#If from generator, make new piece
+			if not self.piece:
+				newloc.add_widget(CodePiece(generator=self.generator),
 					index = index)
+
+			#Otherwise, move piece
 			else :
 				# moving within current line to the left
-				if (newloc == self.source.parent) and \
-						(nty > self.source.top or \
-						(nty > self.source.y and ntx < self.source.x )) :
-					self.source.parent.remove_widget(self.source)
-					newloc.add_widget(self.source, index = (index - 1))
+				if (newloc == self.piece.parent) and \
+						(nty > self.piece.top or \
+						(nty > self.piece.y and ntx < self.piece.x )) :
+					self.piece.parent.remove_widget(self.piece)
+					newloc.add_widget(self.piece, index = (index - 1))
 				# moving within current line to the right, or to other line
 				else:
-					self.source.parent.remove_widget(self.source)
-					newloc.add_widget(self.source, index = index)
+					self.piece.parent.remove_widget(self.piece)
+					newloc.add_widget(self.piece, index = index)
 
-		# if dropped elsewhere, remove source if from codespace
+			#update version, since either added or moved piece
+			self.workspace.updateVersion()
+
+		# if dropped not in codespace, remove piece (if any) from codespace
 		else :
-			if not self.from_generator:
-				self.source.parent.remove_widget(self.source)
+			if self.piece:
+				self.piece.parent.remove_widget(self.source)
+				self.piece.whenRemoved()
+				self.workspace.updateVersion()
 
 		self.parent.remove_widget(self)
 		return super(DragSilhouette, self).on_touch_up(touch)

@@ -14,22 +14,24 @@ RESTRUCTION DROP SYSTEM SO:
 ?scrollable code area - dynamic resize (change layout?) [check]
 scrollable piece area - dynamic resize (change layout?) [check]
 
-"limited number" generators
+"limited number" generators [check]
 	when lines deleted
 	when pieces added/removed
+
+organizable piece area
 
 variable font size
 
 dynamic piece making feature
 	variable font and background colors
-
-drop position visual cues?
+	specify next-to relationships
 
 special "tab" piece
 
 internal pieces
 next-to relationships
 
+drop position visual cues?
 
 File system:
 
@@ -41,13 +43,14 @@ File format:
 Saving/Loading files via file system
 
 File: file.pyp
-Have "original" or "base" version
+Template File: file.pypt
 "script" to file.py
+
 
 Original file preservation? Revert button?
 
 
-IMPORTNAT: UNDO and REDO Buttons:
+IMPORTNAT: UNDO and REDO Buttons: [check]
 	Keep stack of previous versions, also stack for "future recent" versions.
 	Every resultive drop action and line deleting sends current version to recent stack, creates new current version from layout, clears "future recent" stack
 	UNDO puts current version on stack for "future recent" versions,  pops recent stack and reads it to current layout

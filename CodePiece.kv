@@ -12,6 +12,16 @@
 			size: self.size
 	size: self.texture_size
 
+<CodePieceGeneratorLimited>:
+	Label:
+		text: ' (' + str(root.count) + ')'
+		x: root.right
+		y: root.y
+		size_hint: None, None
+		size: self.texture_size
+		font_size: root.font_size
+		font_name: root.font_name
+
 <DragSilhouette>:
 	my_label: my_label
 	size_hint: None, None

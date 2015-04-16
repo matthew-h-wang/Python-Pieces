@@ -1,23 +1,30 @@
 #:kivy 1.0.9
 
 Appspace:
+	menubar: menubar
+	workspace: workspace
 	dragcontroller: dragcontroller
+	MenuBar:
+		id: menubar
+		size_hint: (1, .05)
+		pos_hint:{'x':0, 'y':.95}
 	Workspace:
-	FileOpen:
-		size_hint: (None, None)
+		id: workspace
+		size_hint: (1,.95)
+		pos_hint: {'x':0, 'y':0}
+
+#	PrintButton:
+#		size_hint: (1, .2)
+#		pos_hint: {'x':0, 'y':0}
+#		text: "print rep to console"
+#		on_press: self.printVersion(workspace = workspace)
 	DragController:
 		id: dragcontroller
 
 
 <Workspace>:
-	size_hint: (1,1)
 	orientation: 'horizontal'
 
-#	Button:
-#		size_hint: (1, .2)
-#		pos_hint: {'x':0, 'y':0}
-#		text: "print code to console"
-#		on_press: print root.codespace.getWholeText()
 
 <Splitter>: 
 	sizable_from: 'right'
