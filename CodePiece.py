@@ -36,7 +36,7 @@ class CodePieceGenerator(Label):
 			#hacky part: tacken from scatter.py , on_touch_down line 505-508
 			self.workspace.parent.dragcontroller.add_widget(ds)
 
-			ds._bring_to_front()
+			#ds._bring_to_front()
 			touch.grab(ds)
 			ds._touches.append(touch)
 			ds._last_touch_pos[touch] = self.to_window(touch.x, touch.y)
@@ -127,6 +127,7 @@ class DragSilhouette(Scatter):
 		if self.source.collide_point(*self.source.to_widget(tx, ty)) :
 			self.parent.remove_widget(self)
 			return super(DragSilhouette, self).on_touch_up(touch)
+
 
 		# Next, check if being dropped in the codespace
 		newloc = None

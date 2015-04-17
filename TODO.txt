@@ -8,7 +8,7 @@ change font to monospace CHECK
 add/remove code lines [ CHECK]
 code line numbers [CHECK]
 
-RESTRUCTION DROP SYSTEM SO:
+RESTRUCTURE DROP SYSTEM SO:
 	drag silhouette always infront  [check]
 
 ?scrollable code area - dynamic resize (change layout?) [check]
@@ -18,11 +18,11 @@ scrollable piece area - dynamic resize (change layout?) [check]
 	when lines deleted
 	when pieces added/removed
 
-organizable piece area
+organizable piece area !!!!
 
 variable font size
 
-dynamic piece making feature
+dynamic piece making feature [sorta check]
 	variable font and background colors
 	specify next-to relationships
 
@@ -34,6 +34,7 @@ internal pieces
 next-to relationships
 
 drop position visual cues?
+
 
 File system:
 

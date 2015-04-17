@@ -8,10 +8,47 @@ from kivy.properties import ObjectProperty
 
 from CodePiece import CodePieceGenerator, CodePiece
 from CodeSpace import CodeLinePlus
-#import Tkinter
-#import tkFileDialog
- 
+import tkFileDialog
+from Tkinter import Tk
+import json
+
+
+Tk().withdraw()
 Builder.load_file("FileSaveLoad.kv")
+
+fileoptions = {}
+fileoptions['defaultextension'] = 'pyp'
+fileoptions['filetypes'] = [('PythonPieces files', '.pyp'),
+							('PythonPieces template file', '.pypt'),
+							('all files', '.*')]
+
+class VersionEncoder(json.JSONEncoder):
+	def default(self, obj):
+		if isinstance(obj, (Version,GeneratorRep)):
+			d = {'__class__':obj.__class__.__name__}
+			d.update(obj.__dict__)
+			return d
+		return json.JSONEncoder.default(self, obj)
+
+#class VersionDecoder(json.JSONDecoder):
+#	def __init__(self):
+#		json.JSONDecoder.__init__(self, object_hook=self.dict_to_object)
+
+def dict_to_object(d):
+	print "got here"
+	if '__class__' in d:
+		class_name = d.pop('__class__')
+		if class_name == 'Version':
+			print "version made"
+			return Version(genL = d['generatorList'], codeL = d['codeList'])
+		elif class_name == 'GeneratorRep':
+			print "genRep made"
+			return GeneratorRep(text = d['text'], count=d['count'])
+		else:
+			print "nope"
+			return None
+	else:
+		return d
 
 class MenuBar(BoxLayout):
 	undoStack = ObjectProperty(None)
@@ -19,29 +56,56 @@ class MenuBar(BoxLayout):
 	maxStackSize = 50	
 	currentVersion = None
 	savedVersion = None
+	currentFileName = None
+#	jsonSave = ''
 
 	def __init__(self, **kw):
 		super(MenuBar, self).__init__(**kw)
 		self.undoStack = []
 		self.redoStack = []
+		self.currentVersion = Version(lines = 15)
 
 	def loadVersion(self):
+		loadfilename = tkFileDialog.askopenfilename(**fileoptions)
+		if not loadfilename:
+			return
+		f = open(loadfilename, 'r')
+		loadV =	json.load(f,object_hook=dict_to_object) #TODO make jsonToVersionHook
+		if not isinstance(loadV, Version):
+			print "Error loading from " + loadfilename
+			return
 		self.undoStack = []
 		self.redoStack = []
-		self.currentVersion = self.savedVersion
+		self.currentVersion = loadV
 		self.currentVersion.setAsCurrent(self.parent.workspace)
+		f.close()
+		print "loaded from " + loadfilename
 
 	def saveCurrentVersion(self):
-		self.savedVersion = self.currentVersion
-		print self.parent.workspace.getCode()
+		savefilename = tkFileDialog.asksaveasfilename(**fileoptions)
+		if not savefilename:
+			return
+		self.currentFileName = savefilename
+		f = open(savefilename, 'w')
+		json.dump(self.currentVersion,f, **{"cls":VersionEncoder}) #TODO make VersionEncoder
+		f.close()
+		print "saved to " + savefilename
 
+#	def keepCurrentVersionJson(self):
+#		self.jsonSave = json.dumps(self.currentVersion, **{"cls":VersionEncoder}) #TODO make VersionEncoder
+
+#	def retrieveCurrentVersionJson(self):
+#		v = json.loads(self.jsonSave, object_hook=dict_to_object)
+#		print v.toStringDebug()
+#		self.currentVersion = v
+#		self.currentVersion.setAsCurrent(self.parent.workspace)
 
 	def updateVersion(self):
 		if self.currentVersion:
 			self.undoStack.append(self.currentVersion)
 		while len(self.undoStack) > self.maxStackSize :
 			self.undoStack.pop(0)
-		self.currentVersion = Version(self.parent.workspace)
+		self.currentVersion = Version().fromState(self.parent.workspace)
 		self.redoStack = []
 
 	def undoLast(self):
@@ -72,13 +136,6 @@ class FileOpen(Button):
 #    	return in_path
 
 
-
-class UndoButton(Button):
-	pass
-class RedoButton(Button):
-	pass
-
-
 class GeneratorRep:
 	text = None
 	count = None
@@ -90,12 +147,26 @@ class GeneratorRep:
 	def __repr__(self):
 		return  str(self.count) + " " + self.text  
 
-#representation of state of codeSpace and blockSpace, can be used to restore the state of a project
+
+
+#representation of state of codeSpace and blockSpace, can be used to restore the state of a projec
+
 class Version:
 	generatorList = [] #list of generator representations
 	codeList  = [] #list of code lines, values are lists of IDs that refer to piece list's generators
 
-	def __init__(self, workspace):
+
+	def __init__(self, lines = 10, genL = [], codeL = None):
+		self.generatorList = genL
+		if not codeL:
+			self.codeList = []
+			for x in range(lines):
+				self.codeList.append([])
+		else :
+			self.codeList = codeL
+
+	#Write Version from the state of the workspace
+	def fromState(self, workspace):
 		codespace, blockspace = workspace.codespace, workspace.blockspace
 
 		pieceIdDict = {} #keys: instances of generators, values ID numbers
@@ -116,6 +187,7 @@ class Version:
 				id = pieceIdDict[piece.generator]
 				linelist.insert(0,id)
 			self.codeList.insert(0,linelist)
+		return self
 
 	#Overwrite workspace with this version
 	def setAsCurrent(self, workspace):
@@ -143,7 +215,7 @@ class Version:
 		codespace.updateLineNums()
 
 
-	def __repr__(self):
+	def toStringDebug(self):
 		repr = ""
 		i = 0
 		for rep in self.generatorList:
@@ -158,4 +230,3 @@ class Version:
 				repr += " " + str(id)  
 			repr += "\n"
 		return repr
-

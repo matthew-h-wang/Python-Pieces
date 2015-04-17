@@ -36,7 +36,7 @@ class Workspace(BoxLayout):
 		box = BoxLayout(orientation = 'vertical')
 		box.add_widget(scrollerleft)
 		self.blockmaker = BlockMaker(workspace = self)
-		box.add_widget()
+		box.add_widget(self.blockmaker)
 		splitter.add_widget(box)
 		self.add_widget(splitter)
 
