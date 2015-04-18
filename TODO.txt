@@ -18,7 +18,7 @@ scrollable piece area - dynamic resize (change layout?) [check]
 	when lines deleted
 	when pieces added/removed
 
-organizable piece area !!!!
+organizable piece area [check]
 
 variable font size
 

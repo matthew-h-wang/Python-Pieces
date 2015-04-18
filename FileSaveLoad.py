@@ -39,13 +39,10 @@ def dict_to_object(d):
 	if '__class__' in d:
 		class_name = d.pop('__class__')
 		if class_name == 'Version':
-			print "version made"
 			return Version(genL = d['generatorList'], codeL = d['codeList'])
 		elif class_name == 'GeneratorRep':
-			print "genRep made"
 			return GeneratorRep(text = d['text'], count=d['count'])
 		else:
-			print "nope"
 			return None
 	else:
 		return d

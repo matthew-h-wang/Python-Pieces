@@ -26,11 +26,6 @@ class CodeSpace(StackLayout):
 			linenum -= 1
 		return text
 
-	def getCode(self):
-		text = ''
-		for child in self.children:
-			text = child.getLineText() + '\n' + text
-		return text
 
 
 	def updateLineNums(self):

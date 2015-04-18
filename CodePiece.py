@@ -128,32 +128,26 @@ class DragSilhouette(Scatter):
 			self.parent.remove_widget(self)
 			return super(DragSilhouette, self).on_touch_up(touch)
 
-
-		# Next, check if being dropped in the codespace
-		newloc = None
-		for codelineplus in self.codespace.children :
-			if codelineplus.codeline.collide_point(*codelineplus.to_widget(tx, ty)) :
-				newloc = codelineplus.codeline
-				break
-
-		#If dropped in codespace, either create new piece or move source piece 
-		if newloc:	
-			ntx, nty = newloc.to_widget(tx, ty)
-			# piece indices goes from bottom to top, right to left
-			index = 0
-			for piece in newloc.children :
-				if nty > piece.top or (nty > piece.y and ntx < piece.right):
-					index += 1 
-				else:
+		#if from codepiece, NOT generator
+		if self.piece:
+			# Next, check if being dropped in the codespace
+			newloc = None
+			for codelineplus in self.codespace.children :
+				if codelineplus.codeline.collide_point(*codelineplus.to_widget(tx, ty)) :
+					newloc = codelineplus.codeline
 					break
 
-			#If from generator, make new piece
-			if not self.piece:
-				newloc.add_widget(CodePiece(generator=self.generator),
-					index = index)
+			#If dropped in codespace, either create new piece or move source piece 
+			if newloc:	
+				ntx, nty = newloc.to_widget(tx, ty)
+				# piece indices goes from bottom to top, right to left
+				index = 0
+				for piece in newloc.children :
+					if nty > piece.top or (nty > piece.y and ntx < piece.right):
+						index += 1 
+					else:
+						break
 
-			#Otherwise, move piece
-			else :
 				# moving within current line to the left
 				if (newloc == self.piece.parent) and \
 						(nty > self.piece.top or \
@@ -165,15 +159,58 @@ class DragSilhouette(Scatter):
 					self.piece.parent.remove_widget(self.piece)
 					newloc.add_widget(self.piece, index = index)
 
-			#update version, since either added or moved piece
-			self.workspace.updateVersion()
+				#update version, since either added or moved piece
+				self.workspace.updateVersion()
 
-		# if dropped not in codespace, remove piece (if any) from codespace
-		else :
-			if self.piece:
+			# if dropped not in codespace, remove piece (if any) from codespace
+			else :
 				self.piece.parent.remove_widget(self.source)
 				self.piece.whenRemoved()
 				self.workspace.updateVersion()
+
+		# if from generator
+		else:
+
+			# Next, check if being dropped in the codespace
+			newloc = None
+			for codelineplus in self.codespace.children :
+				if codelineplus.codeline.collide_point(*codelineplus.to_widget(tx, ty)) :
+					newloc = codelineplus.codeline
+					break
+
+			#If dropped in codespace, either create new piece or move source piece 
+			if newloc:	
+				ntx, nty = newloc.to_widget(tx, ty)
+				# piece indices goes from bottom to top, right to left
+				index = 0
+				for piece in newloc.children :
+					if nty > piece.top or (nty > piece.y and ntx < piece.right):
+						index += 1 
+					else:
+						break
+
+				#If from generator, make new piece
+				newloc.add_widget(CodePiece(generator=self.generator),
+						index = index)
+				#update version, since new piece added
+				self.workspace.updateVersion()
+			else:
+				blockspace = self.generator.parent
+				ntx, nty = blockspace.to_widget(tx, ty)
+				
+				#if dropped in the blockspace
+				if blockspace.collide_point(ntx, nty):
+					index = 0
+					for gen in blockspace.children :
+						if nty > gen.top or (nty > gen.y and ntx < gen.right):
+							index += 1 
+						else:
+							break
+					blockspace.remove_widget(self.generator)
+					blockspace.add_widget(self.generator, index = index)
+					self.workspace.updateVersion()
+
+			# if dropped not in codespace or blockspace, do nothing
 
 		self.parent.remove_widget(self)
 		return super(DragSilhouette, self).on_touch_up(touch)
