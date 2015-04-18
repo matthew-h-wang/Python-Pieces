@@ -1,18 +1,56 @@
 #:kivy 1.0.9
 
 <MenuBar>:
-	orientation: 'horizontal'
+	height: 24
+	BoxLayout:
+		pos_hint: {'x':0, 'y':0}
+		orientation: 'horizontal'
+
+		GridLayout:
+			size_hint: (None,1)
+			rows: 1
+			width: self.minimum_width
+
+			MenuButton:
+				on_press: root.loadVersion()
+				imageSource: 'icons/Open-File-icon.png'
+			MenuButton:
+				on_press: root.saveCurrentVersion()
+				imageSource: 'icons/Save-icon.png'
+			MenuButton:
+				on_press: root.saveCurrentVersionAs()
+				imageSource: 'icons/Save-As-icon.png'
+		MenuSpacer:
+
+		GridLayout:
+			size_hint: (None,1)
+			rows: 1
+			width: self.minimum_width
+
+			MenuButton:
+				on_press: root.undoLast()
+				imageSource: 'icons/Undo-icon.png'
+			MenuButton:
+				on_press: root.redoLast()
+				imageSource: 'icons/Redo-icon.png'
 
 
-	Button:
-		text: "save"
-		on_press: root.saveCurrentVersion()
-	Button:
-		text: "load"
-		on_press: root.loadVersion()
-	Button:
-		text: "undo"
-		on_press: root.undoLast()
-	Button:
-		text: "redo"
-		on_press: root.redoLast()
+
+<MenuButton>:
+	size_hint: (None,1)
+	width: self.height
+
+	Image:
+		source: root.imageSource
+		center_x: self.parent.center_x
+		center_y: self.parent.center_y
+
+<MenuSpacer>:
+	size_hint: (None,1)
+	width: self.height / 2
+	canvas:
+		Color:
+			rgba: .2, .2, .2, 1
+		Line:
+			points:	self.center_x, self.y + 2, self.center_x, self.top - 2
+			width: 2

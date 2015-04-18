@@ -12,7 +12,7 @@ from CodeSpace import CodeLine, CodeSpace, BlockSpace, CodeLinePlus
 from FileSaveLoad import MenuBar
 from BlockMaker import BlockMaker
 
-startblocks = ["print ", "\"Hello World!\"", " var ", " = " ,"--->"]
+#startblocks = ["print ", "\"Hello World!\"", " var ", " = " ,"--->"]
 class Appspace(FloatLayout):
 	dragcontroller = ObjectProperty(None)
 	workspace = ObjectProperty(None)
@@ -44,13 +44,12 @@ class Workspace(BoxLayout):
 		scrollerright = ScrollView()
 		scrollerright.add_widget(self.codespace)
 		self.add_widget(scrollerright)
-#		self.add_widget(self.codespace)
 
-		for x in startblocks:
-			generator = CodePieceGenerator(workspace = self, start_text = x)
-			self.blockspace.add_widget(generator)
+#		for x in startblocks:
+#			generator = CodePieceGenerator(workspace = self, start_text = x)
+#			self.blockspace.add_widget(generator)
 
-		for x in range(1, 15) :
+		for x in range(15) :
 			self.codespace.add_widget(CodeLinePlus(fontsize = self.fontsize))
 		self.codespace.updateLineNums()
 

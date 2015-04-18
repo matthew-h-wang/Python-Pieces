@@ -4,20 +4,23 @@ from kivy.uix.widget import Widget
 from kivy.uix.button import Button 
 from kivy.uix.stacklayout import StackLayout
 from kivy.uix.boxlayout import BoxLayout
-from kivy.properties import ObjectProperty
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.gridlayout import GridLayout
+from kivy.properties import ObjectProperty, StringProperty
+from kivy.uix.image import Image
 
 from CodePiece import CodePieceGenerator, CodePiece
 from CodeSpace import CodeLinePlus
 import tkFileDialog
 from Tkinter import Tk
 import json
-
+import os.path 
 
 Tk().withdraw()
 Builder.load_file("FileSaveLoad.kv")
 
 fileoptions = {}
-fileoptions['defaultextension'] = 'pyp'
+fileoptions['defaultextension'] = '.pyp'
 fileoptions['filetypes'] = [('PythonPieces files', '.pyp'),
 							('PythonPieces template file', '.pypt'),
 							('all files', '.*')]
@@ -47,13 +50,14 @@ def dict_to_object(d):
 	else:
 		return d
 
-class MenuBar(BoxLayout):
+class MenuBar(FloatLayout):
 	undoStack = ObjectProperty(None)
 	redoStack = ObjectProperty(None)
 	maxStackSize = 50	
 	currentVersion = None
 	savedVersion = None
 	currentFileName = None
+
 #	jsonSave = ''
 
 	def __init__(self, **kw):
@@ -73,16 +77,26 @@ class MenuBar(BoxLayout):
 			return
 		self.undoStack = []
 		self.redoStack = []
+		self.currentFileName, ext = os.path.splitext(loadfilename)
 		self.currentVersion = loadV
 		self.currentVersion.setAsCurrent(self.parent.workspace)
 		f.close()
 		print "loaded from " + loadfilename
 
-	def saveCurrentVersion(self):
+	def saveCurrentVersionAs(self):
 		savefilename = tkFileDialog.asksaveasfilename(**fileoptions)
 		if not savefilename:
 			return
-		self.currentFileName = savefilename
+		self.currentFileName, ext = os.path.splitext(savefilename)
+		f = open(savefilename, 'w')
+		json.dump(self.currentVersion,f, **{"cls":VersionEncoder}) #TODO make VersionEncoder
+		f.close()
+		print "saved to " + savefilename
+
+	def saveCurrentVersion(self):
+		if not self.currentFileName:
+			return
+		savefilename = self.currentFileName + '.pyp'
 		f = open(savefilename, 'w')
 		json.dump(self.currentVersion,f, **{"cls":VersionEncoder}) #TODO make VersionEncoder
 		f.close()
@@ -227,3 +241,11 @@ class Version:
 				repr += " " + str(id)  
 			repr += "\n"
 		return repr
+
+
+class MenuButton(Button):
+	imageSource = StringProperty('')
+	hoverText = StringProperty('')
+
+class MenuSpacer(Widget):
+	pass

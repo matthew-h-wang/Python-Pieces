@@ -6,12 +6,15 @@ Appspace:
 	dragcontroller: dragcontroller
 	MenuBar:
 		id: menubar
-		size_hint: (1, .05)
-		pos_hint:{'x':0, 'y':.95}
+		size_hint: (1, None)
+		height: 30
+		pos_hint:{'x':0, 'top':1}
 	Workspace:
 		id: workspace
-		size_hint: (1,.95)
+		size_hint: (1,None)
 		pos_hint: {'x':0, 'y':0}
+		height: root.height - menubar.height
+
 
 #	PrintButton:
 #		size_hint: (1, .2)

@@ -26,7 +26,7 @@ dynamic piece making feature [sorta check]
 	variable font and background colors
 	specify next-to relationships
 
-drop-to-remove-generator area
+drop-to-remove-generator area [check]
 
 special "tab" piece
 
@@ -38,9 +38,9 @@ drop position visual cues?
 
 File system:
 
-Header: what is on there? Save, load, undo, redo, 
+Header: what is on there? Save, save as, open , undo, redo, 
 
-File format:
+File format: [check]
 	Contains: generator info, codeline info:
 
 Saving/Loading files via file system

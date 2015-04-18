@@ -26,6 +26,7 @@ class CodePieceGenerator(Label):
 		self.font_name = workspace.fontname
 		self.text = start_text
 		self.count = -1
+		print "made piece with text: \"" + self.text + "\""
 
 	def on_touch_down(self, touch):
 		if self.collide_point(*touch.pos):
@@ -195,8 +196,10 @@ class DragSilhouette(Scatter):
 				#update version, since new piece added
 				self.workspace.updateVersion()
 			else:
-				blockspace = self.generator.parent
+				blockspace = self.generator.workspace.blockspace
+				blockmaker = self.generator.workspace.blockmaker
 				ntx, nty = blockspace.to_widget(tx, ty)
+				ntx2, nty2 = blockmaker.to_widget(tx, ty)
 				
 				#if dropped in the blockspace
 				if blockspace.collide_point(ntx, nty):
@@ -209,8 +212,12 @@ class DragSilhouette(Scatter):
 					blockspace.remove_widget(self.generator)
 					blockspace.add_widget(self.generator, index = index)
 					self.workspace.updateVersion()
+				elif blockmaker.collide_point(ntx2, nty2):
+					blockspace.remove_widget(self.generator)
+					self.workspace.updateVersion()
 
-			# if dropped not in codespace or blockspace, do nothing
+
+			# if dropped not in codespace, blockspace, or blockmaker, do nothing
 
 		self.parent.remove_widget(self)
 		return super(DragSilhouette, self).on_touch_up(touch)

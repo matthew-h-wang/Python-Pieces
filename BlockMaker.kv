@@ -7,8 +7,11 @@
 		id: textinput
 		multiline: False
 		orientation: 'horizontal'
+		on_text: makebutton.disabled = (self.text == '') 
 	BoxLayout:
 		Button: 
+			id: makebutton
 			text: "Make block"
 			on_press: root.makeBlock()
+
 <ColorDropDown>:

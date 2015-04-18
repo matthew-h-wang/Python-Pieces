@@ -18,7 +18,10 @@ class BlockMaker(BoxLayout):
 
 
 	def makeBlock(self):
+		if self.textinput.text == '':
+			return
+
 		gen = CodePieceGenerator(workspace=self.workspace, start_text = self.textinput.text)
 		self.workspace.blockspace.add_widget(gen)
 		self.workspace.updateVersion()
-
+		self.textinput.text == '':
