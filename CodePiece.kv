@@ -4,23 +4,26 @@
 
 <CodePieceGenerator>:
 	size_hint: None, None
+	text: self.codetext
 	canvas.before:
 		Color:
-			rgba: 0, 0, 1, 1
+			rgba: root.bkgdColor
 		Rectangle:
 			pos: self.pos
 			size: self.size
 	size: self.texture_size
 
 <CodePieceGeneratorLimited>:
-	Label:
-		text: ' (' + str(root.count) + ')'
-		x: root.right
-		y: root.y
-		size_hint: None, None
-		size: self.texture_size
-		font_size: root.font_size
-		font_name: root.font_name
+	text: self.codetext + ' (x' + str(root.count) + ')'
+#	Label:
+#		id: countlabel
+#		text: ' (' + str(root.count) + ')'
+#		x: root.x + self.texture_size[0] 
+#		y: root.y
+#		size_hint: (None, None)
+#		size: self.texture_size
+#		font_size: root.font_size
+#		font_name: root.font_name
 
 <DragSilhouette>:
 	my_label: my_label
@@ -36,11 +39,12 @@
 	Label:
 		canvas.before:
 			Color:
-				rgba: 0, 0, 1, 1
+				rgba: root.bkgdColor
 			Rectangle:
 				pos: self.pos
 				size: self.size
 		id: my_label
+		color: root.color
 		font_size: root.font_size
 		font_name: root.font_name
 		size: self.texture_size

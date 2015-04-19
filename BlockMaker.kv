@@ -1,17 +1,67 @@
 #:kivy 1.0.9
 
 <BlockMaker>:
-	orientation: 'vertical'
 	textinput: textinput
-	TextInput:
+	togglelimit: togglelimit
+	limittext: limittext
+	colorbutton: colorbutton
+	cols: 1
+	size_hint_y: None
+	height: self.minimum_height
+	
+	MyInput:
 		id: textinput
-		multiline: False
-		orientation: 'horizontal'
 		on_text: makebutton.disabled = (self.text == '') 
-	BoxLayout:
+		on_text_validate: root.makeBlock(); 
+	GridLayout:
+		rows:1
+		size_hint: (1,None)
+		height: self.minimum_height
+		ColorButton:
+			id: colorbutton
+			text:'T'
+			size_hint_y: None 
+			height: self.texture_size[1]
+			on_release: root.colordrop.open(self)
+
+
+		ToggleButton:
+			id: togglelimit
+			text: 'Limit:'
+			size_hint_y: None 
+			height: self.texture_size[1]
+
+			on_state: limittext.disabled = True if (self.state == 'normal') else False
+		IntegerInput:
+			id: limittext
+			disabled: True
+
+
 		Button: 
 			id: makebutton
-			text: "Make block"
-			on_press: root.makeBlock()
+			text: "Make"
+			size_hint_y: None 
+			height: self.texture_size[1]
+			on_press: root.makeBlock(); textinput.focus = True
+
+
+
+<MyInput>:
+	multiline: False
+	write_tab: False
+	size_hint_y: None
+	height: self.minimum_height
 
 <ColorDropDown>:
+	Button:
+		text: 'R'
+		size_hint_y: None
+		height: self.texture_size[1]
+		color: [1,0,0,1]
+		on_release: root.select(self.color)	
+	Button:
+		text: 'B'
+		size_hint_y: None
+		height: self.texture_size[1]
+		color: [0,0,1,1]
+		on_release: root.select(self.color)	

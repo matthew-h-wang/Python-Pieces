@@ -20,25 +20,27 @@ scrollable piece area - dynamic resize (change layout?) [check]
 
 organizable piece area [check]
 
-variable font size
-
-dynamic piece making feature [sorta check]
-	variable font and background colors
-	specify next-to relationships
 
 drop-to-remove-generator area [check]
 
-special "tab" piece
+Make limited number gens display better in blockspace
 
-internal pieces
-next-to relationships
+variable font size
+choose font itself
 
-drop position visual cues?
+dynamic piece making feature [sorta check]
+	unlimited vs limited blocks
+	choose background/text colors
+
+
+
+drop position visual cues? [Maybe future work]
+internal pieces, next-to relationships [FUTURE WORK]
 
 
 File system:
 
-Header: what is on there? Save, save as, open , undo, redo, 
+Header: what is on there? Save, save as, open , undo, redo,  [check]
 
 File format: [check]
 	Contains: generator info, codeline info:

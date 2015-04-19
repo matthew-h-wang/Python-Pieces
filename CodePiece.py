@@ -2,7 +2,7 @@
 from kivy.uix.widget import Widget
 from kivy.uix.scatter import Scatter
 from kivy.uix.behaviors import ButtonBehavior
-from kivy.properties import StringProperty, NumericProperty, ObjectProperty
+from kivy.properties import StringProperty, NumericProperty, ObjectProperty, ListProperty
 from kivy.uix.label import Label
 from kivy.lang import Builder
 from kivy.core.text import LabelBase
@@ -16,17 +16,21 @@ Builder.load_file("CodePiece.kv")
 
 class CodePieceGenerator(Label):
 	workspace = ObjectProperty(None)
+	codetext = StringProperty('')
+	count = NumericProperty(0)
+	bkgdColor = ListProperty([0, 0, 1, 1])
 
-
-	def __init__(self, workspace, start_text,**kw):
+	def __init__(self, workspace, start_text, color, bkgdColor, **kw):
 		super(CodePieceGenerator, self).__init__(**kw)
 		self.workspace = workspace
 		self.codespace = workspace.codespace
 		self.font_size = workspace.fontsize
 		self.font_name = workspace.fontname
-		self.text = start_text
+		self.codetext = start_text
+		self.color = color
+		self.bkgdColor = bkgdColor
 		self.count = -1
-		print "made piece with text: \"" + self.text + "\""
+
 
 	def on_touch_down(self, touch):
 		if self.collide_point(*touch.pos):
@@ -56,17 +60,27 @@ class CodePieceGenerator(Label):
 
 	def decountPiece(self):
 		pass
-class CodePieceGeneratorLimited(CodePieceGenerator):
-	count = NumericProperty(0)
 
-	def __init__(self, workspace, start_text, max_count, **kw):
+	def whenRemoved(self):
+		#remove all code pieces associated with generator
+		for codelineplus in self.codespace.children :
+			codeline = codelineplus.codeline
+			for piece in codeline.children :
+				if piece.generator == self:
+					codeline.remove_widget(piece)
+
+class CodePieceGeneratorLimited(CodePieceGenerator):
+	def __init__(self, workspace, start_text, max_count, bkgdColor, **kw):
 		super(CodePieceGenerator, self).__init__(**kw)
 		self.workspace = workspace
 		self.codespace = workspace.codespace
 		self.font_size = workspace.fontsize
 		self.font_name = workspace.fontname
-		self.text = start_text
+		self.codetext = start_text
+		self.color = color
+		self.bkgdColor = bkgdColor
 		self.count = max_count
+
 
 
 	def reclaimPiece(self):
@@ -87,8 +101,10 @@ class CodePiece(CodePieceGenerator):
 		self.codespace = generator.codespace
 		self.font_size = generator.font_size
 		self.font_name = generator.font_name
-		self.text = generator.text
-		self.generator.decountPiece()
+		self.text = generator.codetext
+		self.color = generator.color
+		self.bkgdColor = generator.bkgdColor
+#		self.generator.decountPiece()
 
 
 	def getDragSilhouette(self):
@@ -107,17 +123,21 @@ class DragSilhouette(Scatter):
 	my_label = ObjectProperty(None)
 	font_size = NumericProperty(20)
 	font_name = StringProperty('')
+	color = ListProperty([1,1,1,1])
+	bkgdColor = ListProperty([0,0,1,1])
 
 	def __init__(self, source, generator, piece, **kw):
 		super(DragSilhouette, self).__init__(**kw)
 		self.workspace = source.workspace
 		self.source = source
-		self.labeltext = source.text
+		self.labeltext = generator.codetext
 		self.codespace = source.codespace
 		self.generator = generator
 		self.piece = piece
 		self.font_size = source.font_size
 		self.font_name = source.font_name
+		self.color = source.color
+		self.bkgdColor = source.bkgdColor
 
 	def on_touch_up(self,touch):
 		tx, ty = touch.x, touch.y
@@ -138,7 +158,7 @@ class DragSilhouette(Scatter):
 					newloc = codelineplus.codeline
 					break
 
-			#If dropped in codespace, either create new piece or move source piece 
+			#If dropped in codespace, move source piece 
 			if newloc:	
 				ntx, nty = newloc.to_widget(tx, ty)
 				# piece indices goes from bottom to top, right to left
@@ -179,7 +199,7 @@ class DragSilhouette(Scatter):
 					newloc = codelineplus.codeline
 					break
 
-			#If dropped in codespace, either create new piece or move source piece 
+			#If dropped in codespace, create new piece 
 			if newloc:	
 				ntx, nty = newloc.to_widget(tx, ty)
 				# piece indices goes from bottom to top, right to left
@@ -193,6 +213,7 @@ class DragSilhouette(Scatter):
 				#If from generator, make new piece
 				newloc.add_widget(CodePiece(generator=self.generator),
 						index = index)
+				self.generator.decountPiece()
 				#update version, since new piece added
 				self.workspace.updateVersion()
 			else:
@@ -201,7 +222,7 @@ class DragSilhouette(Scatter):
 				ntx, nty = blockspace.to_widget(tx, ty)
 				ntx2, nty2 = blockmaker.to_widget(tx, ty)
 				
-				#if dropped in the blockspace
+				#if dropped in the blockspace, relocate
 				if blockspace.collide_point(ntx, nty):
 					index = 0
 					for gen in blockspace.children :
@@ -212,8 +233,10 @@ class DragSilhouette(Scatter):
 					blockspace.remove_widget(self.generator)
 					blockspace.add_widget(self.generator, index = index)
 					self.workspace.updateVersion()
+				#if dropped in blockmaker, remove generator and all associated pieces
 				elif blockmaker.collide_point(ntx2, nty2):
 					blockspace.remove_widget(self.generator)
+					self.generator.whenRemoved()
 					self.workspace.updateVersion()
 
 

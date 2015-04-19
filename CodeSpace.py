@@ -99,7 +99,7 @@ class CodeLinePlus(BoxLayout):
 #			self.parent.add_line_after(self)
 
 	def tap_add(self, *args):
-		if (self.draghandle.last_touch.is_triple_tap):
+		if (self.draghandle.last_touch.is_double_tap):
 			self.parent.add_line_after(self)
 	
 	def drag_move(self, *args):

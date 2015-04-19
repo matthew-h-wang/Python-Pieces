@@ -15,12 +15,6 @@ Appspace:
 		pos_hint: {'x':0, 'y':0}
 		height: root.height - menubar.height
 
-
-#	PrintButton:
-#		size_hint: (1, .2)
-#		pos_hint: {'x':0, 'y':0}
-#		text: "print rep to console"
-#		on_press: self.printVersion(workspace = workspace)
 	DragController:
 		id: dragcontroller
 
@@ -33,14 +27,6 @@ Appspace:
 	sizable_from: 'right'
 	pos_hint: {'top': 1, 'x': 0}
 
-
-# for debugging purposes
-#<Widget>:
-#    canvas.after:
-#       Line:
-#            rectangle: self.x+1,self.y+1,self.width-1,self.height-1
-#            dash_offset: 5
-#            dash_length: 3
 
 <ScrollView>:
 	size_hint: (1,1)

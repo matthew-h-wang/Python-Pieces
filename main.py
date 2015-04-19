@@ -11,6 +11,7 @@ from CodePiece import CodePiece, CodePieceGenerator, CodePieceGeneratorLimited, 
 from CodeSpace import CodeLine, CodeSpace, BlockSpace, CodeLinePlus
 from FileSaveLoad import MenuBar
 from BlockMaker import BlockMaker
+from RunCode import CodeRunner
 
 #startblocks = ["print ", "\"Hello World!\"", " var ", " = " ,"--->"]
 class Appspace(FloatLayout):
@@ -18,6 +19,8 @@ class Appspace(FloatLayout):
 	workspace = ObjectProperty(None)
 	menubar = ObjectProperty(None)
 
+#	def __init__(self, **kw):
+#		super(Appspace, self).__init__(**kw)
 
 
 class Workspace(BoxLayout):
@@ -66,7 +69,9 @@ class DragController(Widget):
 	pass
 
 class PythonPiecesApp(App):
-	pass  
+	def __init__(self, **kw):
+		super(PythonPiecesApp, self).__init__(**kw)
+		self.icon = 'icons/Large-Python-icon' 
 
 if __name__ == '__main__':
 	PythonPiecesApp().run()
