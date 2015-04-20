@@ -28,6 +28,9 @@ class BlockMaker(GridLayout):
 		self.colordrop = ColorDropDown()
 		self.colordrop.bind(on_select=self.set_colorbutton)
 
+	def is_text_focused(self):
+		return self.textinput.focus or self.limittext.focus
+
 	def set_colorbutton(self,color, *args):
 		print "are we getting here"
 		self.colorbutton.color = self.color #fix this later

@@ -1,9 +1,8 @@
 while True:
-    print "Tick"
-    time.sleep(1)
+    print "hi"
 
 
-import time
+
 
 
 

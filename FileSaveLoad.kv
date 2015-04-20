@@ -9,8 +9,8 @@
 	undoB: undoB
 	redoB: redoB
 	runB: runB
-	stopB: stopB
-
+#	stopB: stopB
+	argsInput: argsInput
 
 	height: 24
 	BoxLayout:
@@ -63,10 +63,21 @@
 			id: runB
 			on_release: root.saveAndRunCode()
 			imageSource: 'icons/Run-icon.png'
-		MenuButton:
-			id: stopB
-			on_release: root.stopCode()
-			imageSource: 'icons/Stop-icon.png'
+#		MenuButton:
+#			id: stopB
+#			on_release: root.stopCode()
+#			imageSource: 'icons/Stop-icon.png'
+		Label:
+			size_hint: (None,1)
+			width: self.texture_size[0]
+			text: ' Args: '
+		TextInput:
+			id: argsInput
+			size_hint: (None,1)
+
+			multiline: False
+			write_tab: False
+
 
 <MenuButton>:
 

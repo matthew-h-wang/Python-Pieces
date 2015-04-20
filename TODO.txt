@@ -26,12 +26,14 @@ drop-to-remove-generator area [check]
 Make limited number gens display better in blockspace [check]
 Only clickable from actual word [check]
 
-variable font size
-choose font itself
+
+TODO
+	variable font size
+	choose font itself
 
 dynamic piece making feature [sorta check]
 	unlimited vs limited blocks [check]
-	choose background/text colors
+	choose background/text colors TODO
 
 
 
@@ -46,15 +48,19 @@ Header: what is on there? Save, save as, open , undo, redo,  [check]
 File format: [check]
 	Contains: generator info, codeline info:
 
-Saving/Loading files via file system
+Saving/Loading files via file system [check]
 
 File: file.pyp
 Template File: file.pypt
-"script" to file.py
+Code Template File: file.pypc
+	uses #INSERTHERE# flag to insert code at appropriate indent
 
-Insert in larger file?
+Keyboard shortcuts for most of these options [check]
 
-Original file preservation? Revert button?
+Insert in larger file/system? [check]
+
+Original file preservation? Revert button? [check]
+
 
 
 IMPORTNAT: UNDO and REDO Buttons: [check]
@@ -63,12 +69,16 @@ IMPORTNAT: UNDO and REDO Buttons: [check]
 	UNDO puts current version on stack for "future recent" versions,  pops recent stack and reads it to current layout
 	REDO pops "future recent" stack, reads it to current layout, moves current version to recent stack.
 
-Filename displayed at top
-"compiling" to python
+Filename displayed at top [check]
 
-Nice File Choosing GUI
+Nice File Choosing GUI [check]
 
-"Shell" emulator:
+Run code in new terminal [check]
+
+[Handle Arguments]
+
+TODO -- maybe not?
+"Shell" emulator: 
 Popup?
 basic argument /stdin inputs
 printing output

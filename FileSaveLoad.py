@@ -1,5 +1,5 @@
 from kivy.lang import Builder
-
+#from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.uix.button import Button 
 from kivy.uix.stacklayout import StackLayout
@@ -27,6 +27,8 @@ fileoptions['defaultextension'] = '.pyp'
 fileoptions['filetypes'] = [('PythonPieces files', '.pyp'),
 							('PythonPieces template file', '.pypt'),
 							('all files', '.*')]
+
+insertString = "#INSERTHERE#"
 
 class VersionEncoder(json.JSONEncoder):
 	def default(self, obj):
@@ -66,7 +68,8 @@ class MenuBar(FloatLayout):
 	undoB = ObjectProperty(None)
 	redoB = ObjectProperty(None)
 	runB = ObjectProperty(None)
-	stopB = ObjectProperty(None)
+	argsInput = ObjectProperty(None)
+#	stopB = ObjectProperty(None)
 
 	def __init__(self, **kw):
 		super(MenuBar, self).__init__(**kw)
@@ -83,24 +86,44 @@ class MenuBar(FloatLayout):
 		self.rshiftPress = False
 		self.shiftPress = False
 
+#		App.get_running_app().bind(on_stop = self.stopCode)
+
 	def saveAndRunCode(self):
 		codefilename = self.saveCode()
 		
 		if not codefilename:
 			return None
-		self.coderunner.startCode(codefilename)
+		self.coderunner.startCode(codefilename, self.argsInput.text)
 
 
-	def stopCode(self):
-		self.coderunner.stopProc()
+#	def stopCode(self):
+#		self.coderunner.stopProc()
 
 	def saveCode(self):
 		if not self.currentFileName:
 			return None
 		savefilename = self.currentFileName + '.py'
 		f = open(savefilename, 'w')
-		codestring = self.parent.workspace.getCode()
-		f.write(codestring)
+		codeTemplatefilename = self.currentFileName + '.pypc'
+
+		if os.path.isfile(codeTemplatefilename):
+			
+			with open(codeTemplatefilename, 'r') as fc:
+				codelines = self.parent.workspace.getCodeLines()
+				for line in fc:
+					if insertString in line:
+						#get indentation
+						tabs = line.split(insertString)[0]
+						#insert code here
+						for cline in codelines:
+							f.write(tabs + cline + "\n")
+					else:
+						f.write(line)
+
+		else: #just write code to file
+			codestring = self.parent.workspace.getCode()
+			f.write(codestring)
+		
 		f.close()
 		print "saved code to " + savefilename
 		return savefilename
@@ -127,6 +150,7 @@ class MenuBar(FloatLayout):
 		self.reloadB.pressable = os.path.isfile(templatefilename)
 
 		print "loaded from " + loadfilename
+		self.get_root_window().set_title(loadfilename)
 		return loadfilename
 
 	def reloadFromTemplate(self):
@@ -149,6 +173,7 @@ class MenuBar(FloatLayout):
 		self.undoB.pressable = True
 		self.redoB.pressable = False
 		print "reloaded from " + loadfilename
+		self.get_root_window().set_title(loadfilename)
 		return loadfilename
 
 	def saveCurrentVersionAs(self):
@@ -161,6 +186,7 @@ class MenuBar(FloatLayout):
 		f.close()
 		self.saveB.pressable = False
 		print "saved to " + savefilename
+		self.get_root_window().set_title(savefilename)
 		return savefilename
 
 	def saveCurrentVersion(self):
@@ -173,6 +199,7 @@ class MenuBar(FloatLayout):
 		f.close()
 		self.saveB.pressable = False
 		print "saved to " + savefilename
+		self.get_root_window().set_title(savefilename)
 		return savefilename
 
 	def updateVersion(self):
@@ -182,7 +209,8 @@ class MenuBar(FloatLayout):
 			self.undoStack.pop(0)
 		self.currentVersion = Version().fromState(self.parent.workspace)
 		self.redoStack = []
-		self.saveB.pressable = True
+		if self.currentFileName:
+			self.saveB.pressable = True
 		self.undoB.pressable = True
 		self.redoB.pressable = False
 		
@@ -211,6 +239,8 @@ class MenuBar(FloatLayout):
 		self.undoB.pressable = True
 		self.redoB.pressable = True if len(self.redoStack) > 0 else False
 
+
+	#These keyboard shortcuts are based in Windows standards
 	def _keyboard_closed(self):
 		pass
 #		self._keyboard.unbind(on_key_down = self._on_keyboard_down)
@@ -227,6 +257,7 @@ class MenuBar(FloatLayout):
 		elif keycode[1] == 'rshift':
 			self.rshiftPress = False
 		return True
+
 
 	def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
 		if keycode[1] == 'lctrl':
@@ -250,7 +281,7 @@ class MenuBar(FloatLayout):
 				self.loadVersion()
 			elif keycode[1] == 'z' :
 				#if blockmaker has text focus, don't override the undo
-				if not self.parent.workspace.blockmaker.textinput.focus :	
+				if not self.parent.workspace.blockmaker.is_text_focused() :	
 					self.undoLast()
 			elif keycode[1] == 'u':
 				self.undoLast()
@@ -258,7 +289,7 @@ class MenuBar(FloatLayout):
 				self.redoLast()
 			elif keycode[1] == 'r':
 				#if blockmaker has text focus, don't override the redo
-				if not self.parent.workspace.blockmaker.textinput.focus :
+				if not self.parent.workspace.blockmaker.is_text_focused() :
 					self.redoLast()
 
 			elif keycode[1] == 'backspace':

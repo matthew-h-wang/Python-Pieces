@@ -64,6 +64,12 @@ class Workspace(BoxLayout):
 		for child in self.codespace.children:
 			text = child.getLineText() + '\n' + text
 		return text
+
+	def getCodeLines(self):
+		text = []
+		for child in self.codespace.children:
+			text.insert(0,child.getLineText())
+		return text
 		
 class DragController(Widget):
 	pass
