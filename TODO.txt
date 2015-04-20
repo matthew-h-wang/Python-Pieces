@@ -28,7 +28,7 @@ Only clickable from actual word [check]
 
 
 TODO
-	variable font size
+	variable font size [check]
 	choose font itself
 
 dynamic piece making feature [sorta check]

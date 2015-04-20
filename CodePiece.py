@@ -19,7 +19,6 @@ class CodePieceGenerator(Label):
 	codetext = StringProperty('')
 	count = NumericProperty(0)
 	bkgdColor = ListProperty([0, 0, 1, 1])
-
 	def __init__(self, workspace, start_text, color, bkgdColor, **kw):
 		super(CodePieceGenerator, self).__init__(**kw)
 		self.workspace = workspace
@@ -31,6 +30,8 @@ class CodePieceGenerator(Label):
 		self.bkgdColor = bkgdColor
 		self.count = -1
 
+#	def update_font_size(self):
+#		self.font_size = self.workspace.fontsize
 
 	def on_touch_down(self, touch):
 		if self.collide_point(*touch.pos):
@@ -70,7 +71,7 @@ class CodePieceGenerator(Label):
 					codeline.remove_widget(piece)
 
 class CodePieceGeneratorLimited(CodePieceGenerator):
-	def __init__(self, workspace, start_text, max_count, bkgdColor, **kw):
+	def __init__(self, workspace, start_text, max_count, color, bkgdColor, **kw):
 		super(CodePieceGenerator, self).__init__(**kw)
 		self.workspace = workspace
 		self.codespace = workspace.codespace

@@ -19,7 +19,7 @@
 	size_hint_y: None
 	canvas.after:
 		Color:
-			rgba: .5, .5, .5, 1
+			rgba: .5, .5, .5, .5
         Line:
             rectangle: self.x,self.y,self.width,self.height
 
@@ -39,9 +39,9 @@
 		size_hint_x: None
 		height: root.codeline.height
 		width: root.fontsize * 1.5
+		font_size:root.fontsize * .5
 		on_release: root.drag_move()
 		on_press: root.tap_add()
-
 
 	CodeLine:
 		id: codeline
@@ -53,6 +53,7 @@
 		size_hint_x: None
 		height: root.codeline.height
 		width: root.fontsize
+		font_size:root.fontsize * .5
 		on_release: root.remove_line()
 
 <BlockSpace>:

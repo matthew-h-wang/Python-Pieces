@@ -18,6 +18,20 @@ Appspace:
 	DragController:
 		id: dragcontroller
 
+	Slider:
+		pos_hint: {'right':1, 'y':0}
+		size_hint: (.1, .05)
+		id: textsizeslider
+		min: 12
+		max: 48
+		step: 2
+		value: 24
+		on_value: root.workspace.updateFontSize(self.value)
+#	Label:
+#		font_size: textsizeslider.value
+#		text: str(textsizeslider.value)
+#		right: textsizeslider.x
+#		y: textsizeslider.y
 
 <Workspace>:
 	orientation: 'horizontal'

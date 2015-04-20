@@ -24,7 +24,7 @@ class Appspace(FloatLayout):
 
 
 class Workspace(BoxLayout):
-	fontsize = NumericProperty(28)
+	fontsize = NumericProperty(24)
 	fontname = StringProperty('Consolas')
 	codespace = ObjectProperty(None)
 	blockspace = ObjectProperty(None)
@@ -55,6 +55,18 @@ class Workspace(BoxLayout):
 		for x in range(15) :
 			self.codespace.add_widget(CodeLinePlus(fontsize = self.fontsize))
 		self.codespace.updateLineNums()
+
+	def updateFontSize(self, size):
+		self.fontsize = size
+		# update all generators in blockspace
+		for gen in self.blockspace.children:
+			gen.font_size = size
+		# update all codelines and pieces in codespace
+		for codelineplus in self.codespace.children:
+			codelineplus.fontsize = size
+			codeline = codelineplus.codeline 
+			for piece in codeline.children:
+				piece.font_size = size
 
 	def updateVersion(self):
 		self.parent.menubar.updateVersion()
