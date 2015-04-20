@@ -23,13 +23,14 @@ organizable piece area [check]
 
 drop-to-remove-generator area [check]
 
-Make limited number gens display better in blockspace
+Make limited number gens display better in blockspace [check]
+Only clickable from actual word [check]
 
 variable font size
 choose font itself
 
 dynamic piece making feature [sorta check]
-	unlimited vs limited blocks
+	unlimited vs limited blocks [check]
 	choose background/text colors
 
 

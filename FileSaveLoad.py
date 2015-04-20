@@ -8,6 +8,7 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.properties import ObjectProperty, StringProperty, BooleanProperty
 from kivy.uix.image import Image
+from kivy.core.window import Window
 
 from CodePiece import CodePieceGenerator, CodePieceGeneratorLimited, CodePiece
 from CodeSpace import CodeLinePlus
@@ -73,6 +74,14 @@ class MenuBar(FloatLayout):
 		self.redoStack = []
 		self.currentVersion = Version(lines = 15)
 		self.coderunner = CodeRunner()
+
+		self._keyboard = Window.request_keyboard(self._keyboard_closed, self)
+		self._keyboard.bind(on_key_down=self._on_keyboard_down)
+		self._keyboard.bind(on_key_up=self._on_keyboard_up)
+		self.lctrlPress = False
+		self.rctrlPress = False
+		self.rshiftPress = False
+		self.shiftPress = False
 
 	def saveAndRunCode(self):
 		codefilename = self.saveCode()
@@ -201,6 +210,66 @@ class MenuBar(FloatLayout):
 		self.saveB.pressable = True
 		self.undoB.pressable = True
 		self.redoB.pressable = True if len(self.redoStack) > 0 else False
+
+	def _keyboard_closed(self):
+		pass
+#		self._keyboard.unbind(on_key_down = self._on_keyboard_down)
+#		self._keyboard.unbind(on_key_up = self._on_keyboard_up)
+#		self._keyboard = None
+
+	def _on_keyboard_up(self, keyboard, keycode):
+		if keycode[1] == 'lctrl':
+			self.lctrlPress = False
+		elif keycode[1] == 'rctrl':
+			self.rctrlPress = False
+		elif keycode[1] == 'shift':
+			self.shiftPress = False
+		elif keycode[1] == 'rshift':
+			self.rshiftPress = False
+		return True
+
+	def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
+		if keycode[1] == 'lctrl':
+			self.lctrlPress = True
+		elif keycode[1] == 'rctrl':
+			self.rctrlPress = True
+		elif keycode[1] == 'shift':
+			self.shiftPress = True
+		elif keycode[1] == 'rshift':
+			self.rshiftPress = True
+		else :
+			if not (self.lctrlPress or self.rctrlPress) :
+				return True
+
+			if keycode[1] == 's':
+				if (self.shiftPress or self.rshiftPress):
+					self.saveCurrentVersionAs()
+				else:
+					self.saveCurrentVersion()
+			elif keycode[1] == 'o':
+				self.loadVersion()
+			elif keycode[1] == 'z' :
+				#if blockmaker has text focus, don't override the undo
+				if not self.parent.workspace.blockmaker.textinput.focus :	
+					self.undoLast()
+			elif keycode[1] == 'u':
+				self.undoLast()
+			elif keycode[1] == 'y':
+				self.redoLast()
+			elif keycode[1] == 'r':
+				#if blockmaker has text focus, don't override the redo
+				if not self.parent.workspace.blockmaker.textinput.focus :
+					self.redoLast()
+
+			elif keycode[1] == 'backspace':
+				if (self.shiftPress or self.rshiftPress):
+					self.reloadFromTemplate()
+			elif keycode[1] == 'enter':
+				if (self.shiftPress or self.rshiftPress):
+					self.stopCode()
+				else:
+					self.saveAndRunCode()
+		return True
 
 
 
