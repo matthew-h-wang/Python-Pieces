@@ -1,11 +1,10 @@
-#:kivy 1.0.9
+#:kivy 1.9.0
 
 <BlockMaker>:
 	textinput: textinput
 	togglelimit: togglelimit
 	limittext: limittext
 	colorbutton: colorbutton
-#	bkgdcolorbutton: bkgdcolorbutton
 
 	cols: 1
 	size_hint_y: None
@@ -22,9 +21,8 @@
 		ToggleButton:
 			id: togglelimit
 			text: 'Limit:'
-			size_hint_y: None 
-			height: self.texture_size[1]
-			size_hint_x: None
+			size_hint: (None, None)
+			height: self.texture_size[1] 
 			width: self.texture_size[0] *1.5
 			on_state: limittext.disabled = True if (self.state == 'normal') else False
 		IntegerInput:
@@ -47,28 +45,15 @@
 			color: [1,1,1,1]
 			background_normal: ''
 			background_color: [0,0,1,1]
-			size_hint_y: None 
+			size_hint: (None, None)
 			height: self.texture_size[1]
-			size_hint_x: None
 			width: self.texture_size[0] *1.5
 			on_release: root.toggle_colorset()
-		#Button:
-		#	id: bkgdcolorbutton
-		#	text: 'Bkgd'
-		#	color: [1,1,1,1]
-		#	background_normal: ''
-		#	background_color: [0,0,1,1]
-		#	size_hint_y: None 
-		#	height: self.texture_size[1]
-		#	size_hint_x: None
-		#	width: self.texture_size[0] *1.5
-		#	on_release: root.toggle_bkgdcolorset()
 		Button: 
 			id: makebutton
 			text: "Make"
-			size_hint_y: None 
+			size_hint: (None, None)
 			height: self.texture_size[1]
-			size_hint_x: None
 			width: self.texture_size[0] *1.5
 			on_press: root.makeBlock(); textinput.focus = True
 	Widget:
@@ -154,7 +139,7 @@
 
 <ColorSetButton>:
 	size_hint_y: None 
-	height: self.texture_size[1]
+	height: self.texture_size[1] * 1.5
 	on_press: self.updateButton()
 
 <BkgdColorSetButton>:
@@ -175,5 +160,5 @@
 			points: self.x + 1,self.y + 1,self.x + 1, self.top -1,self.right - 1,self.top - 1
 	size_hint_y: None 
 	background_normal: ''
-	height: self.texture_size[1]
+	height: self.texture_size[1] * 1.5
 	on_press: self.updateButton()

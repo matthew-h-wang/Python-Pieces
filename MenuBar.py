@@ -1,14 +1,10 @@
 from kivy.lang import Builder
-#from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.uix.button import Button 
-from kivy.uix.stacklayout import StackLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.gridlayout import GridLayout
 from kivy.properties import ObjectProperty, StringProperty, BooleanProperty
 from kivy.uix.image import Image
-from kivy.uix.dropdown import DropDown 
 from kivy.core.window import Window
 from kivy.uix.label import Label
 
@@ -16,33 +12,29 @@ from CodePiece import CodePieceGenerator, CodePieceGeneratorLimited, CodePiece
 from CodeSpace import CodeLinePlus
 from RunCode import CodeRunner
 
-import tkFileDialog
 from Tkinter import Tk
-import json
-import os.path 
+from tkFileDialog import askopenfilename, asksaveasfilename
+from json import JSONEncoder, dump, load
+from os.path import splitext, isfile
 
 Tk().withdraw()
-Builder.load_file("FileSaveLoad.kv")
+Builder.load_file("MenuBar.kv")
 
-fileoptions = {}
-fileoptions['defaultextension'] = '.pyp'
-fileoptions['filetypes'] = [('PythonPieces files', '.pyp'),
+fileoptions =  {'defaultextension': '.pyp', 
+				'filetypes' : [('PythonPieces files', '.pyp'),
 							('PythonPieces template file', '.pypt'),
-							('all files', '.*')]
+							('all files', '.*')]}
 
 insertString = "#INSERTHERE#"
 
-class VersionEncoder(json.JSONEncoder):
+class VersionEncoder(JSONEncoder):
 	def default(self, obj):
 		if isinstance(obj, (Version,GeneratorRep)):
 			d = {'__class__':obj.__class__.__name__}
 			d.update(obj.__dict__)
 			return d
-		return json.JSONEncoder.default(self, obj)
+		return JSONEncoder.default(self, obj)
 
-#class VersionDecoder(json.JSONDecoder):
-#	def __init__(self):
-#		json.JSONDecoder.__init__(self, object_hook=self.dict_to_object)
 
 def dict_to_object(d):
 	if '__class__' in d:
@@ -74,7 +66,6 @@ class MenuBar(FloatLayout):
 #	settingsB = ObjectProperty(None)
 #	settingspanel = ObjectProperty(None)
 	argsInput = ObjectProperty(None)
-#	stopB = ObjectProperty(None)
 
 	def __init__(self, **kw):
 		super(MenuBar, self).__init__(**kw)
@@ -91,12 +82,6 @@ class MenuBar(FloatLayout):
 		self.rshiftPress = False
 		self.shiftPress = False
 
-	#	self.settingspanel = DropDown()
-	#	self.fontslider = FontSizeSlider()
-	#	self.fontslider.bind(on_value = self.updateFontSize)
-#		self.settingspanel.add_widget(self.fontslider)
-
-#		App.get_running_app().bind(on_stop = self.stopCode)
 
 	def toggleBlockMaker(self):
 		self.parent.workspace.toggleBlockMaker()
@@ -109,9 +94,6 @@ class MenuBar(FloatLayout):
 		self.coderunner.startCode(codefilename, self.argsInput.text)
 
 
-#	def stopCode(self):
-#		self.coderunner.stopProc()
-
 	def saveCode(self):
 		if not self.currentFileName:
 			return None
@@ -119,7 +101,7 @@ class MenuBar(FloatLayout):
 		f = open(savefilename, 'w')
 		codeTemplatefilename = self.currentFileName + '.pypc'
 
-		if os.path.isfile(codeTemplatefilename):
+		if isfile(codeTemplatefilename):
 			
 			with open(codeTemplatefilename, 'r') as fc:
 				codelines = self.parent.workspace.getCodeLines()
@@ -142,17 +124,17 @@ class MenuBar(FloatLayout):
 		return savefilename
 
 	def loadVersion(self):
-		loadfilename = tkFileDialog.askopenfilename(**fileoptions)
+		loadfilename = askopenfilename(**fileoptions)
 		if not loadfilename:
 			return None
 		f = open(loadfilename, 'r')
-		loadV =	json.load(f,object_hook=dict_to_object) 
+		loadV =	load(f,object_hook=dict_to_object) 
 		if not isinstance(loadV, Version):
 			print "Error loading from " + loadfilename
 			return None
 		self.undoStack = []
 		self.redoStack = []
-		self.currentFileName, ext = os.path.splitext(loadfilename)
+		self.currentFileName, ext = splitext(loadfilename)
 		self.currentVersion = loadV
 		self.currentVersion.setAsCurrent(self.parent.workspace)
 		f.close()
@@ -161,7 +143,7 @@ class MenuBar(FloatLayout):
 		self.saveB.pressable = True
 		self.runB.pressable = True
 		templatefilename = self.currentFileName + '.pypt'
-		self.reloadB.pressable = os.path.isfile(templatefilename)
+		self.reloadB.pressable = isfile(templatefilename)
 
 		print "loaded from " + loadfilename
 		self.get_root_window().set_title(loadfilename)
@@ -171,11 +153,11 @@ class MenuBar(FloatLayout):
 		if not self.currentFileName:
 			return None
 		loadfilename = self.currentFileName + '.pypt'
-		if not os.path.isfile(loadfilename):
+		if not isfile(loadfilename):
 			print "No template to load from"
 			return None
 		f = open(loadfilename, 'r')
-		loadV =	json.load(f,object_hook=dict_to_object) 
+		loadV =	load(f,object_hook=dict_to_object) 
 		if not isinstance(loadV, Version):
 			print "Error loading from " + loadfilename
 			return None
@@ -191,12 +173,12 @@ class MenuBar(FloatLayout):
 		return loadfilename
 
 	def saveCurrentVersionAs(self):
-		savefilename = tkFileDialog.asksaveasfilename(**fileoptions)
+		savefilename = asksaveasfilename(**fileoptions)
 		if not savefilename:
 			return None
-		self.currentFileName, ext = os.path.splitext(savefilename)
+		self.currentFileName, ext = splitext(savefilename)
 		f = open(savefilename, 'w')
-		json.dump(self.currentVersion,f, **{"cls":VersionEncoder})
+		dump(self.currentVersion,f, **{"cls":VersionEncoder})
 		f.close()
 		self.saveB.pressable = False
 		self.runB.pressable = True
@@ -210,7 +192,7 @@ class MenuBar(FloatLayout):
 			return None
 		savefilename = self.currentFileName + '.pyp'
 		f = open(savefilename, 'w')
-		json.dump(self.currentVersion,f, **{"cls":VersionEncoder}) 
+		dump(self.currentVersion,f, **{"cls":VersionEncoder}) 
 		f.close()
 		self.saveB.pressable = False
 		print "saved to " + savefilename
@@ -260,6 +242,7 @@ class MenuBar(FloatLayout):
 	#These keyboard shortcuts are based in Windows standards
 	def _keyboard_closed(self):
 		pass
+		#do not unbind keyboard for shortcuts
 #		self._keyboard.unbind(on_key_down = self._on_keyboard_down)
 #		self._keyboard.unbind(on_key_up = self._on_keyboard_up)
 #		self._keyboard = None

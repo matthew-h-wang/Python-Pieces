@@ -1,11 +1,9 @@
-
-from kivy.uix.widget import Widget
+from kivy.lang import Builder
 from kivy.uix.scatter import Scatter
-from kivy.uix.behaviors import ButtonBehavior
 from kivy.properties import StringProperty, NumericProperty, ObjectProperty, ListProperty
 from kivy.uix.label import Label
-from kivy.lang import Builder
 from kivy.core.text import LabelBase
+
 import settings
 
 for font in settings.KIVY_FONTS:
@@ -30,19 +28,13 @@ class CodePieceGenerator(Label):
 		self.bkgdColor = bkgdColor
 		self.count = -1
 
-#	def update_font_size(self):
-#		self.font_size = self.workspace.fontsize
-
 	def on_touch_down(self, touch):
 		if self.collide_point(*touch.pos):
 
 			ds = self.getDragSilhouette()
-			#self.add_widget(ds)
-			#ds.pos = self.workspace.parent.dragcontroller.to_widget(self.x, self.y)
+
 			#hacky part: tacken from scatter.py , on_touch_down line 505-508
 			self.workspace.parent.dragcontroller.add_widget(ds)
-
-			#ds._bring_to_front()
 			touch.grab(ds)
 			ds._touches.append(touch)
 			ds._last_touch_pos[touch] = self.to_window(touch.x, touch.y)

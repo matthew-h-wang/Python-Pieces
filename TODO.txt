@@ -26,17 +26,17 @@ Make limited number gens display better in blockspace [check]
 Only clickable from actual word [check]
 
 
-TODO
-	choose font itself TODO
-
 variable font size [check]
 
-dynamic piece making feature [sorta check]
+dynamic piece making feature [check]
 	unlimited vs limited blocks [check]
 	choose background/text colors [check]
 
 
 
+
+TODO
+	choose font itself TODO
 drop position visual cues? [Maybe future work]
 internal pieces, next-to relationships [FUTURE WORK]
 

@@ -1,4 +1,4 @@
-#:kivy 1.0.9
+#:kivy 1.9.0
 
 <MenuBar>:
 
@@ -9,7 +9,6 @@
 	undoB: undoB
 	redoB: redoB
 	runB: runB
-#	stopB: stopB
 #	settingsB: settingsB
 	argsInput: argsInput
 
@@ -69,10 +68,6 @@
 			pressable: False
 			on_release: root.saveAndRunCode()
 			imageSource: 'icons/Run-icon.png'
-#		MenuButton:
-#			id: stopB
-#			on_release: root.stopCode()
-#			imageSource: 'icons/Stop-icon.png'
 		Label:
 			size_hint: (None,1)
 			width: self.texture_size[0]
@@ -105,10 +100,4 @@
 <MenuSpacer>:
 	size_hint: (None,1)
 	width: root.height / 3
-	#canvas:
-	#	Color:
-	#		rgba: .2, .2, .2, 1
-	#	Line:
-	#		points:	root.center_x, root.y + 2, root.center_x, root.top - 2
-	#		width: 2
 

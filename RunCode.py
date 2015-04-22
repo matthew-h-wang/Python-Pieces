@@ -1,5 +1,4 @@
-import subprocess
-import os
+from os import system
 
 class CodeRunner:
 	#proc = None
@@ -9,7 +8,7 @@ class CodeRunner:
 		#	self.stopProc()
 		#This is very Windows specific. 
 		#self.proc = subprocess.Popen('cmd /K python ' + filepath,  creationflags=subprocess.CREATE_NEW_CONSOLE)
-		os.system("start cmd /C \"python " + filepath + " " + args + " & timeout 86400 /NOBREAK >nul\"")
+		system("start cmd /C \"python " + filepath + " " + args + " & timeout 86400 /NOBREAK >nul\"")
 
 	#def stopProc(self):
 	#	if self.proc:

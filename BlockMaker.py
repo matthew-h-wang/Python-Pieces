@@ -1,11 +1,13 @@
+from kivy.lang import Builder
 from kivy.uix.widget import Widget
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.uix.togglebutton import ToggleButton
 from kivy.properties import ObjectProperty
 from kivy.uix.gridlayout import GridLayout
+
 from CodePiece import CodePieceGenerator, CodePieceGeneratorLimited
-from kivy.lang import Builder
+
 import re
 
 colormap = {'Red':[1,0,0,1], 'Blue':[0,0,1,1], 'Green':[0,1,0,1]}
@@ -19,7 +21,6 @@ class BlockMaker(GridLayout):
 	limittext = ObjectProperty(None)
 	colorbutton = ObjectProperty(None)
 	colorset = ObjectProperty(None)
-#	bkgdcolorbutton = ObjectProperty(None)
 	bkgdcolorset = ObjectProperty(None)
 	color = [1,1,1,1]
 	bkgdColor = [0,0,1,1]
@@ -38,7 +39,6 @@ class BlockMaker(GridLayout):
 		else:
 			self.remove_widget(self.colorset)
 
-#	def toggle_bkgdcolorset(self):
 		if not (self.bkgdcolorset in self.children):
 			self.add_widget(self.bkgdcolorset, index=1)
 		else:
