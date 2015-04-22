@@ -5,7 +5,7 @@
 	togglelimit: togglelimit
 	limittext: limittext
 	colorbutton: colorbutton
-	bkgdcolorbutton: bkgdcolorbutton
+#	bkgdcolorbutton: bkgdcolorbutton
 
 	cols: 1
 	size_hint_y: None
@@ -19,27 +19,6 @@
 		rows:1
 		size_hint: (1,None)
 		height: self.minimum_height
-		Button:
-			id: colorbutton
-			text: 'Text'
-			color: [1,1,1,1]
-			size_hint_y: None 
-			height: self.texture_size[1]
-			size_hint_x: None
-			width: self.texture_size[0] *1.5
-			on_release: root.toggle_colorset()
-		Button:
-			id: bkgdcolorbutton
-			text: 'Bkgd'
-			color: [1,1,1,1]
-			background_normal: ''
-			background_color: [0,0,1,1]
-			size_hint_y: None 
-			height: self.texture_size[1]
-			size_hint_x: None
-			width: self.texture_size[0] *1.5
-			on_release: root.toggle_bkgdcolorset()
-
 		ToggleButton:
 			id: togglelimit
 			text: 'Limit:'
@@ -51,8 +30,39 @@
 		IntegerInput:
 			id: limittext
 			disabled: True
-
-
+		Button:
+			canvas:
+				Color:
+					rgba: [x*.5 for x in self.background_color]
+				Line:
+					width: 1
+					points: self.x + 1,self.y + 1,self.right - 1, self.y + 1,self.right - 1,self.top - 1
+				Color:
+					rgba: [ .5 + x*.5 for x in self.background_color]
+				Line:
+					width:1
+					points: self.x + 1,self.y + 1,self.x + 1, self.top -1,self.right - 1,self.top - 1
+			id: colorbutton
+			text: 'Color'
+			color: [1,1,1,1]
+			background_normal: ''
+			background_color: [0,0,1,1]
+			size_hint_y: None 
+			height: self.texture_size[1]
+			size_hint_x: None
+			width: self.texture_size[0] *1.5
+			on_release: root.toggle_colorset()
+		#Button:
+		#	id: bkgdcolorbutton
+		#	text: 'Bkgd'
+		#	color: [1,1,1,1]
+		#	background_normal: ''
+		#	background_color: [0,0,1,1]
+		#	size_hint_y: None 
+		#	height: self.texture_size[1]
+		#	size_hint_x: None
+		#	width: self.texture_size[0] *1.5
+		#	on_release: root.toggle_bkgdcolorset()
 		Button: 
 			id: makebutton
 			text: "Make"
@@ -61,6 +71,9 @@
 			size_hint_x: None
 			width: self.texture_size[0] *1.5
 			on_press: root.makeBlock(); textinput.focus = True
+	Widget:
+		size_hint_y: None
+		height: 10
 
 <MyInput>:
 	multiline: False
@@ -111,6 +124,7 @@
 		background_color: [0,0,0,0]
 	BkgdColorSetButton:
 		text: 'White'
+		color: [0,0,0,1]
 		background_color: [1,1,1,1]
 	BkgdColorSetButton:
 		text: 'Grey'
@@ -129,6 +143,7 @@
 		background_color: [0,1,0,1]
 	BkgdColorSetButton:
 		text: 'Yellow'
+		color: [0,0,0,1]
 		background_color: [1,1,0,1]
 	BkgdColorSetButton:
 		text: 'Cyan'
@@ -143,6 +158,21 @@
 	on_press: self.updateButton()
 
 <BkgdColorSetButton>:
+	canvas:
+		Color:
+			rgba: 0, 0, 0, 1
+		Line:
+    		rectangle: self.x,self.y,self.width,self.height
+		Color:
+			rgba: [x*.5 for x in self.background_color]
+		Line:
+			width: 1
+			points: self.x + 1,self.y + 1,self.right - 1, self.y + 1,self.right - 1,self.top - 1
+		Color:
+			rgba: [ .5 + x*.5 for x in self.background_color]
+		Line:
+			width:1
+			points: self.x + 1,self.y + 1,self.x + 1, self.top -1,self.right - 1,self.top - 1
 	size_hint_y: None 
 	background_normal: ''
 	height: self.texture_size[1]

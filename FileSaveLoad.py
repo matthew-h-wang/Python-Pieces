@@ -11,7 +11,6 @@ from kivy.uix.image import Image
 from kivy.uix.dropdown import DropDown 
 from kivy.core.window import Window
 from kivy.uix.label import Label
-from kivy.uix.slider import Slider
 
 from CodePiece import CodePieceGenerator, CodePieceGeneratorLimited, CodePiece
 from CodeSpace import CodeLinePlus
@@ -60,7 +59,7 @@ def dict_to_object(d):
 class MenuBar(FloatLayout):
 	undoStack = ObjectProperty(None)
 	redoStack = ObjectProperty(None)
-	maxStackSize = 50	
+	maxStackSize = 100	
 	currentVersion = None
 	currentFileName = None
 
@@ -71,8 +70,9 @@ class MenuBar(FloatLayout):
 	undoB = ObjectProperty(None)
 	redoB = ObjectProperty(None)
 	runB = ObjectProperty(None)
-	settingsB = ObjectProperty(None)
-	settingspanel = ObjectProperty(None)
+
+#	settingsB = ObjectProperty(None)
+#	settingspanel = ObjectProperty(None)
 	argsInput = ObjectProperty(None)
 #	stopB = ObjectProperty(None)
 
@@ -91,15 +91,15 @@ class MenuBar(FloatLayout):
 		self.rshiftPress = False
 		self.shiftPress = False
 
-		self.settingspanel = DropDown()
-		self.fontslider = FontSizeSlider()
-		self.fontslider.bind(on_value = self.updateFontSize)
-		self.settingspanel.add_widget(self.fontslider)
+	#	self.settingspanel = DropDown()
+	#	self.fontslider = FontSizeSlider()
+	#	self.fontslider.bind(on_value = self.updateFontSize)
+#		self.settingspanel.add_widget(self.fontslider)
 
 #		App.get_running_app().bind(on_stop = self.stopCode)
 
-	def updateFontSize(self):
-		self.parent.workspace.updateFontSize(self.fontslider.value)
+	def toggleBlockMaker(self):
+		self.parent.workspace.toggleBlockMaker()
 
 	def saveAndRunCode(self):
 		codefilename = self.saveCode()
@@ -159,6 +159,7 @@ class MenuBar(FloatLayout):
 		self.undoB.pressable = False
 		self.redoB.pressable = False
 		self.saveB.pressable = True
+		self.runB.pressable = True
 		templatefilename = self.currentFileName + '.pypt'
 		self.reloadB.pressable = os.path.isfile(templatefilename)
 
@@ -198,6 +199,7 @@ class MenuBar(FloatLayout):
 		json.dump(self.currentVersion,f, **{"cls":VersionEncoder})
 		f.close()
 		self.saveB.pressable = False
+		self.runB.pressable = True
 		print "saved to " + savefilename
 		self.get_root_window().set_title(savefilename)
 		return savefilename
@@ -236,7 +238,8 @@ class MenuBar(FloatLayout):
 			self.redoStack.pop(0)
 		self.currentVersion = self.undoStack.pop()
 		self.currentVersion.setAsCurrent(self.parent.workspace)
-		self.saveB.pressable = True
+		if self.currentFileName:
+			self.saveB.pressable = True
 		self.redoB.pressable = True
 		self.undoB.pressable = True if (len(self.undoStack) > 0) else False
 
@@ -248,7 +251,8 @@ class MenuBar(FloatLayout):
 			self.undoStack.pop(0)
 		self.currentVersion = self.redoStack.pop()
 		self.currentVersion.setAsCurrent(self.parent.workspace)
-		self.saveB.pressable = True
+		if self.currentFileName:
+			self.saveB.pressable = True
 		self.undoB.pressable = True
 		self.redoB.pressable = True if len(self.redoStack) > 0 else False
 
@@ -428,7 +432,4 @@ class MenuButton(Button):
 	pressable = BooleanProperty(True)
 
 class MenuSpacer(Widget):
-	pass
-
-class FontSizeSlider(Slider):
 	pass

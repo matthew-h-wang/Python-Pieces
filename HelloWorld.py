@@ -1,5 +1,8 @@
 for x in range(10):
-	print "Adam Gallager"
+	print "Hello World"
+	
+	
+	"Hello World"
 	
 	
 	
@@ -11,13 +14,10 @@ for x in range(10):
 	
 	
 	
+	print "Hello World"
 	
 	
-	
-	print "Adam Gallager"
-	
-	
-	
+	"Hello World"
 	
 	
 	

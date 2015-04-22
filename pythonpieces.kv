@@ -4,20 +4,36 @@ Appspace:
 	menubar: menubar
 	workspace: workspace
 	dragcontroller: dragcontroller
+
+	canvas:
+		Color:
+			rgba: .2,.2,.2,1
+		Rectangle:
+			size: root.size
+			pos: root.pos
+
 	MenuBar:
 		id: menubar
 		size_hint: (1, None)
 		height: 30
 		pos_hint:{'x':0, 'top':1}
 	Workspace:
+		canvas.before: 
+			Color:
 		id: workspace
 		size_hint: (1,None)
 		pos_hint: {'x':0, 'y':0}
 		height: root.height - menubar.height
 
+	FontSizeSlider:
+		id: fontslider
+		pos_hint: {'right':1, 'top':1}
+		size_hint: (.15, None)
+		height: 28
+		on_value: workspace.updateFontSize(self.value)
+
 	DragController:
 		id: dragcontroller
-
 
 
 <Workspace>:
@@ -34,3 +50,9 @@ Appspace:
 	do_scroll_x: False
 	do_scroll_y: True
 	scroll_timeout: 50
+
+<FontSizeSlider>:
+	min: 12
+	max: 48
+	step: 2
+	value: 24

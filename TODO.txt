@@ -2,7 +2,6 @@ Drag-and-drop UI:
 
 handle code line overflow -- how? (change layout?)
 
-
 change font to monospace CHECK
 
 add/remove code lines [ CHECK]
@@ -28,12 +27,13 @@ Only clickable from actual word [check]
 
 
 TODO
-	variable font size [check]
-	choose font itself
+	choose font itself TODO
+
+variable font size [check]
 
 dynamic piece making feature [sorta check]
 	unlimited vs limited blocks [check]
-	choose background/text colors TODO
+	choose background/text colors [check]
 
 
 
@@ -75,7 +75,7 @@ Nice File Choosing GUI [check]
 
 Run code in new terminal [check]
 
-[Handle Arguments]
+Handle Arguments [check]
 
 TODO -- maybe not?
 "Shell" emulator: 

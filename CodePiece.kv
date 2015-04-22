@@ -1,8 +1,11 @@
 #:kivy 1.0.9
 
+	# YAYYYYYY! GO MATT! XP
+# o_o
 
 
 <CodePieceGenerator>:
+
 	size_hint: None, None
 	text: self.codetext
 	canvas.before:
@@ -11,6 +14,16 @@
 		Rectangle:
 			pos: self.pos
 			size: self.size
+		Color:
+			rgba: [x*.5 for x in root.bkgdColor]
+		Line:
+			width: 1
+			points: self.x + 1,self.y + 1,self.right - 1, self.y + 1,self.right - 1,self.top - 1
+		Color:
+			rgba: [ .5 + x*.5 for x in root.bkgdColor]
+		Line:
+			width:1
+			points: self.x + 1,self.y + 1,self.x + 1, self.top -1,self.right - 1,self.top - 1
 	size: self.texture_size
 
 <CodePieceGeneratorLimited>:
@@ -26,6 +39,11 @@
 #		font_name: root.font_name
 
 <DragSilhouette>:
+	canvas:
+		Color:
+			rgba: .5, .5, .5, .5
+		Line:
+    		rectangle: self.x,self.y,self.width,self.height
 	my_label: my_label
 	size_hint: None, None
 	size: my_label.size
@@ -43,6 +61,17 @@
 			Rectangle:
 				pos: self.pos
 				size: self.size
+			Color:
+				rgba: [x*.5 for x in root.bkgdColor]
+			Line:
+				width: 1
+				points: self.x + 1,self.y + 1,self.right - 1, self.y + 1,self.right - 1,self.top - 1
+			Color:
+				rgba: [ .5 + x*.5 for x in root.bkgdColor]
+			Line:
+				width:1
+				points: self.x + 1,self.y + 1,self.x + 1, self.top -1,self.right - 1,self.top - 1
+
 		id: my_label
 		color: root.color
 		font_size: root.font_size

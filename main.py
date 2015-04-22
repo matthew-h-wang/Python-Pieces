@@ -1,4 +1,5 @@
 from kivy.app import App
+from kivy.core.window import Window
 from kivy.uix.widget import Widget
 from kivy.uix.scatter import Scatter
 from kivy.uix.button import Button 
@@ -7,11 +8,15 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.splitter import Splitter
 from kivy.uix.scrollview import ScrollView
+from kivy.uix.slider import Slider
+
 from CodePiece import CodePiece, CodePieceGenerator, CodePieceGeneratorLimited, DragSilhouette
 from CodeSpace import CodeLine, CodeSpace, BlockSpace, CodeLinePlus
 from FileSaveLoad import MenuBar
 from BlockMaker import BlockMaker
 from RunCode import CodeRunner
+
+
 
 #startblocks = ["print ", "\"Hello World!\"", " var ", " = " ,"--->"]
 class Appspace(FloatLayout):
@@ -19,6 +24,8 @@ class Appspace(FloatLayout):
 	workspace = ObjectProperty(None)
 	menubar = ObjectProperty(None)
 
+	def __init__(self, **kw):
+		super(Appspace, self).__init__(**kw)
 #	def __init__(self, **kw):
 #		super(Appspace, self).__init__(**kw)
 
@@ -36,12 +43,12 @@ class Workspace(BoxLayout):
 		splitter = Splitter(sizable_from = 'bottom')
 		scrollerleft = ScrollView()
 		scrollerleft.add_widget(self.blockspace)
-		box = BoxLayout(orientation = 'vertical')
+		self.blockbox = BoxLayout(orientation = 'vertical')
 		self.blockmaker = BlockMaker(workspace = self)
 
-		box.add_widget(self.blockmaker)
-		box.add_widget(scrollerleft)
-		splitter.add_widget(box)
+#		self.blockbox.add_widget(self.blockmaker)
+		self.blockbox.add_widget(scrollerleft)
+		splitter.add_widget(self.blockbox)
 		self.add_widget(splitter)
 
 		self.codespace = CodeSpace(workspace = self)
@@ -84,13 +91,27 @@ class Workspace(BoxLayout):
 			text.insert(0,child.getLineText())
 		return text
 		
+	def toggleBlockMaker(self):
+		if (self.blockmaker in self.blockbox.children):
+			self.blockbox.remove_widget(self.blockmaker)
+		else:
+			self.blockbox.add_widget(self.blockmaker, index=1)
+
 class DragController(Widget):
 	pass
 
+
+class FontSizeSlider(Slider):
+	pass
+
 class PythonPiecesApp(App):
-	def __init__(self, **kw):
-		super(PythonPiecesApp, self).__init__(**kw)
-		self.icon = 'icons/Large-Python-icon' 
+	def build(self):
+		Window.set_icon('icons/Large-Python-icon.png')
+		self.icon = 'icons/Large-Python-icon'
+
+#	def __init__(self, **kw):
+#		super(PythonPiecesApp, self).__init__(**kw)
+#		self.icon = 'icons/Large-Python-icon' 
 
 if __name__ == '__main__':
 	PythonPiecesApp().run()

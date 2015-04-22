@@ -19,7 +19,7 @@ class BlockMaker(GridLayout):
 	limittext = ObjectProperty(None)
 	colorbutton = ObjectProperty(None)
 	colorset = ObjectProperty(None)
-	bkgdcolorbutton = ObjectProperty(None)
+#	bkgdcolorbutton = ObjectProperty(None)
 	bkgdcolorset = ObjectProperty(None)
 	color = [1,1,1,1]
 	bkgdColor = [0,0,1,1]
@@ -34,13 +34,13 @@ class BlockMaker(GridLayout):
 
 	def toggle_colorset(self):
 		if not (self.colorset in self.children):
-			self.add_widget(self.colorset)
+			self.add_widget(self.colorset, index = 1)
 		else:
 			self.remove_widget(self.colorset)
 
-	def toggle_bkgdcolorset(self):
+#	def toggle_bkgdcolorset(self):
 		if not (self.bkgdcolorset in self.children):
-			self.add_widget(self.bkgdcolorset)
+			self.add_widget(self.bkgdcolorset, index=1)
 		else:
 			self.remove_widget(self.bkgdcolorset)
 
@@ -51,10 +51,10 @@ class BlockMaker(GridLayout):
 		gen = None
 		if self.togglelimit.state == 'normal':
 			gen = CodePieceGenerator(workspace=self.workspace, start_text = self.textinput.text,
-				color = self.colorbutton.color, bkgdColor = self.bkgdcolorbutton.background_color)
+				color = self.colorbutton.color, bkgdColor = self.colorbutton.background_color)
 		elif self.limittext.text != '':
 			gen = CodePieceGeneratorLimited(workspace=self.workspace, start_text = self.textinput.text, 
-				color = self.colorbutton.color, bkgdColor = self.bkgdcolorbutton.background_color, max_count= int(self.limittext.text))
+				color = self.colorbutton.color, bkgdColor = self.colorbutton.background_color, max_count= int(self.limittext.text))
 		else:
 			return
 		self.workspace.blockspace.add_widget(gen)
@@ -100,4 +100,5 @@ class BkgdColorSet(GridLayout):
 class BkgdColorSetButton(Button):
 
 	def updateButton(self):
-		self.parent.maker.bkgdcolorbutton.background_color = self.background_color
+		self.parent.maker.colorbutton.background_color = self.background_color
+#		self.parent.maker.bkgdcolorbutton.background_color = self.background_color

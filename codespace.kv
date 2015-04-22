@@ -4,9 +4,10 @@
 	orientation: 'lr-tb'
 	size_hint: (1, None)
 	height: self.minimum_height
+	spacing:[0,1]
 	canvas.before:
 		Color:
-			rgba: 0, 0, 0, 1
+			rgba: 0, 0, 0, .2
 		Rectangle:
 			pos: self.pos
 			size: self.size
@@ -62,9 +63,15 @@
 	height: self.minimum_height
 	spacing: [20,10]
 
-	canvas.after:
+	canvas.before:
 		Color:
-			rgba: .5, .5, .5, 1
-        Line:
+			rgba: 0, 0, 0, .2
+		Rectangle:
+			pos: self.pos
+			size: self.size
+
+		Color:
+			rgba: 0, 0, 0, 1
+		Line:
             rectangle: self.x,self.y,self.width,self.height
 

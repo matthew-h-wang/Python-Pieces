@@ -10,7 +10,7 @@
 	redoB: redoB
 	runB: runB
 #	stopB: stopB
-	settingsB: settingsB
+#	settingsB: settingsB
 	argsInput: argsInput
 
 	height: 24
@@ -24,7 +24,7 @@
 			size_hint: (None,1)
 			width: self.height
 			source: 'icons/Python-icon.png'
-		
+
 		MenuButton:
 			id: loadB
 			on_release: root.loadVersion()
@@ -46,6 +46,13 @@
 		MenuSpacer:
 
 		MenuButton:
+			id: toggleMakerB
+			on_release: root.toggleBlockMaker()
+			imageSource: 'icons/Bricks-icon.png'
+
+		MenuSpacer:
+
+		MenuButton:
 			id: undoB
 			pressable: False
 			on_release: root.undoLast()
@@ -59,6 +66,7 @@
 
 		MenuButton:
 			id: runB
+			pressable: False
 			on_release: root.saveAndRunCode()
 			imageSource: 'icons/Run-icon.png'
 #		MenuButton:
@@ -76,11 +84,11 @@
 			multiline: False
 			write_tab: False
 
-	MenuButton:
-		id: settingsB
-		on_release: root.settingspanel.open(self)
-		imageSource: 'icons/Settings-icon.png'
-		pos_hint: {'right':1, 'y':0}
+#	MenuButton:
+#		id: settingsB
+#		on_release: root.settingspanel.open(self)
+#		imageSource: 'icons/Settings-icon.png'
+#		pos_hint: {'right':1, 'y':0}
 
 <MenuButton>:
 
@@ -96,23 +104,11 @@
 
 <MenuSpacer>:
 	size_hint: (None,1)
-	width: root.height / 2
-	canvas:
-		Color:
-			rgba: .2, .2, .2, 1
-		Line:
-			points:	root.center_x, root.y + 2, root.center_x, root.top - 2
-			width: 2
+	width: root.height / 3
+	#canvas:
+	#	Color:
+	#		rgba: .2, .2, .2, 1
+	#	Line:
+	#		points:	root.center_x, root.y + 2, root.center_x, root.top - 2
+	#		width: 2
 
-<FontSizeSlider>:
-	orientation: 'vertical'
-	size_hint: (None,None)
-	size: (20, 100)
-	min: 12
-	max: 48
-	step: 2
-	value: 24
-	Label:
-		text: str(root.value)
-		right: root.x
-		y: root.y

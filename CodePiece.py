@@ -239,7 +239,7 @@ class DragSilhouette(Scatter):
 					blockspace.add_widget(self.generator, index = index)
 					self.workspace.updateVersion()
 				#if dropped in blockmaker, remove generator and all associated pieces
-				elif blockmaker.collide_point(ntx2, nty2):
+				elif blockmaker.parent and blockmaker.collide_point(ntx2, nty2):
 					blockspace.remove_widget(self.generator)
 					self.generator.whenRemoved()
 					self.workspace.updateVersion()
