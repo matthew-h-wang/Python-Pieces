@@ -8,7 +8,10 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.properties import ObjectProperty, StringProperty, BooleanProperty
 from kivy.uix.image import Image
+from kivy.uix.dropdown import DropDown 
 from kivy.core.window import Window
+from kivy.uix.label import Label
+from kivy.uix.slider import Slider
 
 from CodePiece import CodePieceGenerator, CodePieceGeneratorLimited, CodePiece
 from CodeSpace import CodeLinePlus
@@ -68,6 +71,8 @@ class MenuBar(FloatLayout):
 	undoB = ObjectProperty(None)
 	redoB = ObjectProperty(None)
 	runB = ObjectProperty(None)
+	settingsB = ObjectProperty(None)
+	settingspanel = ObjectProperty(None)
 	argsInput = ObjectProperty(None)
 #	stopB = ObjectProperty(None)
 
@@ -86,7 +91,15 @@ class MenuBar(FloatLayout):
 		self.rshiftPress = False
 		self.shiftPress = False
 
+		self.settingspanel = DropDown()
+		self.fontslider = FontSizeSlider()
+		self.fontslider.bind(on_value = self.updateFontSize)
+		self.settingspanel.add_widget(self.fontslider)
+
 #		App.get_running_app().bind(on_stop = self.stopCode)
+
+	def updateFontSize(self):
+		self.parent.workspace.updateFontSize(self.fontslider.value)
 
 	def saveAndRunCode(self):
 		codefilename = self.saveCode()
@@ -415,4 +428,7 @@ class MenuButton(Button):
 	pressable = BooleanProperty(True)
 
 class MenuSpacer(Widget):
+	pass
+
+class FontSizeSlider(Slider):
 	pass

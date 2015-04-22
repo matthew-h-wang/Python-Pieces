@@ -4,11 +4,11 @@ from kivy.uix.button import Button
 from kivy.uix.togglebutton import ToggleButton
 from kivy.properties import ObjectProperty
 from kivy.uix.gridlayout import GridLayout
-from kivy.uix.dropdown import DropDown
 from CodePiece import CodePieceGenerator, CodePieceGeneratorLimited
 from kivy.lang import Builder
-
 import re
+
+colormap = {'Red':[1,0,0,1], 'Blue':[0,0,1,1], 'Green':[0,1,0,1]}
 
 Builder.load_file("BlockMaker.kv")
 
@@ -17,23 +17,32 @@ class BlockMaker(GridLayout):
 	textinput = ObjectProperty(None)
 	togglelimit = ObjectProperty(None)
 	limittext = ObjectProperty(None)
-	colordrop = ObjectProperty(None)
 	colorbutton = ObjectProperty(None)
-
+	colorset = ObjectProperty(None)
+	bkgdcolorbutton = ObjectProperty(None)
+	bkgdcolorset = ObjectProperty(None)
 	color = [1,1,1,1]
 	bkgdColor = [0,0,1,1]
 	def __init__(self, workspace,**kw):
 		super(BlockMaker, self).__init__(**kw)
 		self.workspace = workspace
-		self.colordrop = ColorDropDown()
-		self.colordrop.bind(on_select=self.set_colorbutton)
+		self.colorset = ColorSet(self)
+		self.bkgdcolorset = BkgdColorSet(self)
 
 	def is_text_focused(self):
 		return self.textinput.focus or self.limittext.focus
 
-	def set_colorbutton(self,color, *args):
-		print "are we getting here"
-		self.colorbutton.color = self.color #fix this later
+	def toggle_colorset(self):
+		if not (self.colorset in self.children):
+			self.add_widget(self.colorset)
+		else:
+			self.remove_widget(self.colorset)
+
+	def toggle_bkgdcolorset(self):
+		if not (self.bkgdcolorset in self.children):
+			self.add_widget(self.bkgdcolorset)
+		else:
+			self.remove_widget(self.bkgdcolorset)
 
 	def makeBlock(self):
 		if self.textinput.text == '':
@@ -42,10 +51,10 @@ class BlockMaker(GridLayout):
 		gen = None
 		if self.togglelimit.state == 'normal':
 			gen = CodePieceGenerator(workspace=self.workspace, start_text = self.textinput.text,
-				color = self.color, bkgdColor = self.bkgdColor)
+				color = self.colorbutton.color, bkgdColor = self.bkgdcolorbutton.background_color)
 		elif self.limittext.text != '':
 			gen = CodePieceGeneratorLimited(workspace=self.workspace, start_text = self.textinput.text, 
-				color = self.color, bkgdColor = self.bkgdColor, max_count= int(self.limittext.text))
+				color = self.colorbutton.color, bkgdColor = self.bkgdcolorbutton.background_color, max_count= int(self.limittext.text))
 		else:
 			return
 		self.workspace.blockspace.add_widget(gen)
@@ -66,8 +75,29 @@ class IntegerInput(MyInput):
 		s = re.sub(pat, '', substring)
 		return super(IntegerInput, self).insert_text(s, from_undo=from_undo)
 
-class ColorButton(Button):
-	pass
 
-class ColorDropDown(DropDown):
-	pass
+class ColorSet(GridLayout):
+	maker = ObjectProperty(None)
+
+	def __init__(self, maker,**kw):
+		super(ColorSet, self).__init__(**kw)
+		self.maker = maker
+
+
+class ColorSetButton(Button):
+
+	def updateButton(self):
+		self.parent.maker.colorbutton.color = self.color
+
+class BkgdColorSet(GridLayout):
+	maker = ObjectProperty(None)
+
+	def __init__(self, maker,**kw):
+		super(BkgdColorSet, self).__init__(**kw)
+		self.maker = maker
+
+
+class BkgdColorSetButton(Button):
+
+	def updateButton(self):
+		self.parent.maker.bkgdcolorbutton.background_color = self.background_color

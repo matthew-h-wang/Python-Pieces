@@ -5,6 +5,8 @@
 	togglelimit: togglelimit
 	limittext: limittext
 	colorbutton: colorbutton
+	bkgdcolorbutton: bkgdcolorbutton
+
 	cols: 1
 	size_hint_y: None
 	height: self.minimum_height
@@ -17,20 +19,34 @@
 		rows:1
 		size_hint: (1,None)
 		height: self.minimum_height
-		ColorButton:
+		Button:
 			id: colorbutton
-			text:'T'
+			text: 'Text'
+			color: [1,1,1,1]
 			size_hint_y: None 
 			height: self.texture_size[1]
-			on_release: root.colordrop.open(self)
-
+			size_hint_x: None
+			width: self.texture_size[0] *1.5
+			on_release: root.toggle_colorset()
+		Button:
+			id: bkgdcolorbutton
+			text: 'Bkgd'
+			color: [1,1,1,1]
+			background_normal: ''
+			background_color: [0,0,1,1]
+			size_hint_y: None 
+			height: self.texture_size[1]
+			size_hint_x: None
+			width: self.texture_size[0] *1.5
+			on_release: root.toggle_bkgdcolorset()
 
 		ToggleButton:
 			id: togglelimit
 			text: 'Limit:'
 			size_hint_y: None 
 			height: self.texture_size[1]
-
+			size_hint_x: None
+			width: self.texture_size[0] *1.5
 			on_state: limittext.disabled = True if (self.state == 'normal') else False
 		IntegerInput:
 			id: limittext
@@ -42,9 +58,9 @@
 			text: "Make"
 			size_hint_y: None 
 			height: self.texture_size[1]
+			size_hint_x: None
+			width: self.texture_size[0] *1.5
 			on_press: root.makeBlock(); textinput.focus = True
-
-
 
 <MyInput>:
 	multiline: False
@@ -52,16 +68,82 @@
 	size_hint_y: None
 	height: self.minimum_height
 
-<ColorDropDown>:
-	Button:
-		text: 'R'
-		size_hint_y: None
-		height: self.texture_size[1]
-		color: [1,0,0,1]
-		on_release: root.select(self.color)	
-	Button:
-		text: 'B'
-		size_hint_y: None
-		height: self.texture_size[1]
+<ColorSet>:
+	cols:5
+	spacing: [0,0]
+	size_hint: (1,None)
+	height: self.minimum_height
+	ColorSetButton:
+		text: 'White'
+		color: [1,1,1,1]
+	ColorSetButton:
+		text: 'Grey'
+		color: [.6,.6,.6,1]
+	ColorSetButton:
+		text: 'Black'
+		color: [0,0,0,1]	
+	ColorSetButton:
+		text: 'Red'
+		color: [1,.2,.2,1]
+	ColorSetButton:
+		text: 'Blue'
 		color: [0,0,1,1]
-		on_release: root.select(self.color)	
+	ColorSetButton:
+		text: 'Green'
+		color: [0,.8,0,1]
+	ColorSetButton:
+		text: 'Yellow'
+		color: [1,1,.1,1]
+	ColorSetButton:
+		text: 'Cyan'
+		color: [0,.2,.6,1]
+	ColorSetButton:
+		text: 'Purple'
+		color: [.6,0,1,1]
+
+<BkgdColorSet>:
+	cols:5
+	spacing: [2,2]
+	size_hint: (1,None)
+	height: self.minimum_height
+	BkgdColorSetButton:
+		text: 'None'
+		background_color: [0,0,0,0]
+	BkgdColorSetButton:
+		text: 'White'
+		background_color: [1,1,1,1]
+	BkgdColorSetButton:
+		text: 'Grey'
+		background_color: [.5,.5,.5,1]
+	BkgdColorSetButton:
+		text: 'Black'
+		background_color: [0,0,0,1]
+	BkgdColorSetButton:
+		text: 'Red'
+		background_color: [1,0,0,1]
+	BkgdColorSetButton:
+		text: 'Blue'
+		background_color: [0,0,1,1]
+	BkgdColorSetButton:
+		text: 'Green'
+		background_color: [0,1,0,1]
+	BkgdColorSetButton:
+		text: 'Yellow'
+		background_color: [1,1,0,1]
+	BkgdColorSetButton:
+		text: 'Cyan'
+		background_color: [0,1,1,1]
+	BkgdColorSetButton:
+		text: 'Purple'
+		background_color: [1,0,1,1]
+
+<ColorSetButton>:
+	size_hint_y: None 
+	height: self.texture_size[1]
+	on_press: self.updateButton()
+
+<BkgdColorSetButton>:
+	size_hint_y: None 
+	background_normal: ''
+	height: self.texture_size[1]
+	on_press: self.updateButton()

@@ -165,7 +165,9 @@ class DragSilhouette(Scatter):
 				# piece indices goes from bottom to top, right to left
 				index = 0
 				for piece in newloc.children :
-					if nty > piece.top or (nty > piece.y and ntx < piece.right):
+					if piece == self.piece:
+						index += 1
+					if nty > piece.top or (nty > piece.y and ntx < piece.x):
 						index += 1 
 					else:
 						break
@@ -227,7 +229,9 @@ class DragSilhouette(Scatter):
 				if blockspace.collide_point(ntx, nty):
 					index = 0
 					for gen in blockspace.children :
-						if nty > gen.top or (nty > gen.y and ntx < gen.right):
+						#if gen == self.generator:
+						#	index += 1
+						if nty > gen.top or (nty > gen.y and ntx < gen.x):
 							index += 1 
 						else:
 							break

@@ -10,6 +10,7 @@
 	redoB: redoB
 	runB: runB
 #	stopB: stopB
+	settingsB: settingsB
 	argsInput: argsInput
 
 	height: 24
@@ -23,28 +24,25 @@
 			size_hint: (None,1)
 			width: self.height
 			source: 'icons/Python-icon.png'
-		GridLayout:
-			rows: 1
-			size_hint: (0,1)
-			width: self.minimum_width
-			MenuButton:
-				id: loadB
-				on_release: root.loadVersion()
-				imageSource: 'icons/Open-File-icon.png'
-			MenuButton:
-				id: reloadB
-				pressable: False
-				on_release: root.reloadFromTemplate()
-				imageSource: 'icons/Refresh-icon.png'
-			MenuButton:
-				id: saveB
-				pressable: False
-				on_release: root.saveCurrentVersion()
-				imageSource: 'icons/Save-icon.png'
-			MenuButton:
-				id: saveAsB
-				on_release: root.saveCurrentVersionAs()
-				imageSource: 'icons/Save-As-icon.png'
+		
+		MenuButton:
+			id: loadB
+			on_release: root.loadVersion()
+			imageSource: 'icons/Open-File-icon.png'
+		MenuButton:
+			id: reloadB
+			pressable: False
+			on_release: root.reloadFromTemplate()
+			imageSource: 'icons/Refresh-icon.png'
+		MenuButton:
+			id: saveB
+			pressable: False
+			on_release: root.saveCurrentVersion()
+			imageSource: 'icons/Save-icon.png'
+		MenuButton:
+			id: saveAsB
+			on_release: root.saveCurrentVersionAs()
+			imageSource: 'icons/Save-As-icon.png'
 		MenuSpacer:
 
 		MenuButton:
@@ -78,6 +76,11 @@
 			multiline: False
 			write_tab: False
 
+	MenuButton:
+		id: settingsB
+		on_release: root.settingspanel.open(self)
+		imageSource: 'icons/Settings-icon.png'
+		pos_hint: {'right':1, 'y':0}
 
 <MenuButton>:
 
@@ -100,3 +103,16 @@
 		Line:
 			points:	root.center_x, root.y + 2, root.center_x, root.top - 2
 			width: 2
+
+<FontSizeSlider>:
+	orientation: 'vertical'
+	size_hint: (None,None)
+	size: (20, 100)
+	min: 12
+	max: 48
+	step: 2
+	value: 24
+	Label:
+		text: str(root.value)
+		right: root.x
+		y: root.y
