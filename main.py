@@ -54,6 +54,8 @@ class Workspace(BoxLayout):
 
 	def updateFontSize(self, size):
 		self.fontsize = size
+
+		self.blockspace.fontsize = size
 		# update all generators in blockspace
 		for gen in self.blockspace.children:
 			gen.font_size = size

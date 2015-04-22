@@ -155,23 +155,25 @@ class DragSilhouette(Scatter):
 			if newloc:	
 				ntx, nty = newloc.to_widget(tx, ty)
 				# piece indices goes from bottom to top, right to left
-				index = 0
-				for piece in newloc.children :
-					if piece == self.piece:
-						index += 1
-					if nty > piece.top or (nty > piece.y and ntx < piece.x):
-						index += 1 
-					else:
-						break
 
-				# moving within current line to the left
-				if (newloc == self.piece.parent) and \
-						(nty > self.piece.top or \
-						(nty > self.piece.y and ntx < self.piece.x )) :
+				#moving within same line
+				if (newloc == self.piece.parent):
+					index = 0
+					for piece in newloc.children :
+						if nty > piece.top or (nty > piece.y and ntx < piece.x):
+							index += 1 
+						else:
+							break
 					self.piece.parent.remove_widget(self.piece)
-					newloc.add_widget(self.piece, index = (index - 1))
-				# moving within current line to the right, or to other line
+					newloc.add_widget(self.piece, index = index)
+				#moving to other line
 				else:
+					index = 0
+					for piece in newloc.children :
+						if nty > piece.top or (nty > piece.y and ntx < piece.right):
+							index += 1 
+						else:
+							break
 					self.piece.parent.remove_widget(self.piece)
 					newloc.add_widget(self.piece, index = index)
 

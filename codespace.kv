@@ -1,4 +1,4 @@
-#:kivy 1.0.9
+#:kivy 1.9.0
 
 <CodeSpace>:
 	orientation: 'lr-tb'
@@ -13,11 +13,12 @@
 			size: self.size
 
 <CodeLine>:
-	height: self.fontsize + 2 * self.spacing[1]
-	on_minimum_height: self.height = max(self.minimum_height, self.fontsize + 2 * self.spacing[1])
+	height: self.fontsize + 2* self.spacing[1]+ self.padding[1]+self.padding[3]
+	on_minimum_height: self.height = max(self.minimum_height, self.fontsize + 2*self.spacing[1]+self.padding[1]+self.padding[3])
 	spacing: [2,2]
 	orientation: 'lr-tb'
 	size_hint_y: None
+	padding: [3,3,3,2]
 	canvas.after:
 		Color:
 			rgba: .5, .5, .5, .5
@@ -61,11 +62,11 @@
 	orientation: 'lr-tb'
 	size_hint: (1, None)
 	height: self.minimum_height
-	spacing: [20,10]
-
+	spacing: [self.fontsize / 2,self.fontsize / 4]
+	padding: [5,5,5,5]
 	canvas.before:
 		Color:
-			rgba: 0, 0, 0, .2
+			rgba: 1, 1, 1, .15
 		Rectangle:
 			pos: self.pos
 			size: self.size

@@ -1,4 +1,4 @@
-#:kivy 1.0.9
+#:kivy 1.9.0
 
 	# YAYYYYYY! GO MATT! XP
 # o_o
@@ -15,15 +15,19 @@
 			pos: self.pos
 			size: self.size
 		Color:
-			rgba: [x*.5 for x in root.bkgdColor]
+			rgba: [x*.5 for x in root.bkgdColor[0:3]] + root.bkgdColor[3:4]
 		Line:
 			width: 1
-			points: self.x + 1,self.y + 1,self.right - 1, self.y + 1,self.right - 1,self.top - 1
+#			points: self.x + 1,self.y + 1,self.right - 1, self.y + 1,self.right - 1,self.top - 1
+			points: self.x ,self.y ,self.right , self.y ,self.right ,self.top 
+
 		Color:
-			rgba: [ .5 + x*.5 for x in root.bkgdColor]
+			rgba: [ .5 + x*.5 for x in root.bkgdColor[0:3]] + root.bkgdColor[3:4]
 		Line:
 			width:1
-			points: self.x + 1,self.y + 1,self.x + 1, self.top -1,self.right - 1,self.top - 1
+#			points: self.x + 1,self.y + 1,self.x + 1, self.top -1,self.right - 1,self.top - 1
+			points: self.x ,self.y ,self.x , self.top ,self.right ,self.top 
+
 	size: self.texture_size
 
 <CodePieceGeneratorLimited>:
@@ -53,15 +57,17 @@
 				pos: self.pos
 				size: self.size
 			Color:
-				rgba: [x*.5 for x in root.bkgdColor]
+				rgba: [x*.5 for x in root.bkgdColor[0:3]] + root.bkgdColor[3:4]
 			Line:
 				width: 1
-				points: self.x + 1,self.y + 1,self.right - 1, self.y + 1,self.right - 1,self.top - 1
+			#	points: self.x + 1,self.y + 1,self.right - 1, self.y + 1,self.right - 1,self.top - 1
+				points: self.x ,self.y ,self.right , self.y ,self.right ,self.top 
 			Color:
-				rgba: [ .5 + x*.5 for x in root.bkgdColor]
+				rgba: [ .5 + x*.5 for x in root.bkgdColor[0:3]] + root.bkgdColor[3:4]
 			Line:
 				width:1
-				points: self.x + 1,self.y + 1,self.x + 1, self.top -1,self.right - 1,self.top - 1
+#				points: self.x + 1,self.y + 1,self.x + 1, self.top -1,self.right - 1,self.top - 1
+				points: self.x ,self.y ,self.x , self.top ,self.right ,self.top 
 
 		id: my_label
 		color: root.color

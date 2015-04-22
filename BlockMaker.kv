@@ -18,6 +18,27 @@
 		rows:1
 		size_hint: (1,None)
 		height: self.minimum_height
+		Button:
+			canvas:
+				Color:
+					rgba: [x*.5 for x in self.background_color[0:3]] + self.background_color[3:4]
+				Line:
+					width: 1
+					points: self.x + 1,self.y + 1,self.right - 1, self.y + 1,self.right - 1,self.top - 1
+				Color:
+					rgba: [ .5 + x*.5 for x in self.background_color[0:3]] + self.background_color[3:4]
+				Line:
+					width:1
+					points: self.x + 1,self.y + 1,self.x + 1, self.top -1,self.right - 1,self.top - 1
+			id: colorbutton
+			text: 'Color'
+			color: [0,0,0,1]
+			background_normal: ''
+			background_color: [.4,.4,.4,1]
+			size_hint: (None, None)
+			height: self.texture_size[1]
+			width: self.texture_size[0] *1.5
+			on_release: root.toggle_colorset()
 		ToggleButton:
 			id: togglelimit
 			text: 'Limit:'
@@ -28,27 +49,6 @@
 		IntegerInput:
 			id: limittext
 			disabled: True
-		Button:
-			canvas:
-				Color:
-					rgba: [x*.5 for x in self.background_color]
-				Line:
-					width: 1
-					points: self.x + 1,self.y + 1,self.right - 1, self.y + 1,self.right - 1,self.top - 1
-				Color:
-					rgba: [ .5 + x*.5 for x in self.background_color]
-				Line:
-					width:1
-					points: self.x + 1,self.y + 1,self.x + 1, self.top -1,self.right - 1,self.top - 1
-			id: colorbutton
-			text: 'Color'
-			color: [1,1,1,1]
-			background_normal: ''
-			background_color: [0,0,1,1]
-			size_hint: (None, None)
-			height: self.texture_size[1]
-			width: self.texture_size[0] *1.5
-			on_release: root.toggle_colorset()
 		Button: 
 			id: makebutton
 			text: "Make"
@@ -75,29 +75,32 @@
 		text: 'White'
 		color: [1,1,1,1]
 	ColorSetButton:
-		text: 'Grey'
-		color: [.6,.6,.6,1]
+		text: 'Silver'
+		color: [.75,.75,.75,1]
+	ColorSetButton:
+		text: 'Grey' #dim gray
+		color: [.4,.4,.4,1]
 	ColorSetButton:
 		text: 'Black'
 		color: [0,0,0,1]	
 	ColorSetButton:
-		text: 'Red'
-		color: [1,.2,.2,1]
+		text: 'Red' #crimson
+		color: [.8,.08,.24,1]
 	ColorSetButton:
-		text: 'Blue'
-		color: [0,0,1,1]
+		text: 'Orange' #orange
+		color: [1,.55,0,1]
 	ColorSetButton:
-		text: 'Green'
-		color: [0,.8,0,1]
+		text: 'Yellow' 
+		color: [1,1,0,1]
 	ColorSetButton:
-		text: 'Yellow'
-		color: [1,1,.1,1]
+		text: 'Green' #lime
+		color: [0,1,0,1]
 	ColorSetButton:
-		text: 'Cyan'
-		color: [0,.2,.6,1]
+		text: 'Blue' #Deep Sky Blue
+		color: [0,.8,1,1]
 	ColorSetButton:
-		text: 'Purple'
-		color: [.6,0,1,1]
+		text: 'Purple' #dark orchid
+		color: [.6,0,.8,1]
 
 <BkgdColorSet>:
 	cols:5
@@ -110,37 +113,58 @@
 	BkgdColorSetButton:
 		text: 'White'
 		color: [0,0,0,1]
-		background_color: [1,1,1,1]
+		background_color: [.98,.98,.98,1]
 	BkgdColorSetButton:
 		text: 'Grey'
-		background_color: [.5,.5,.5,1]
+		background_color: [.4,.4,.4,1]
 	BkgdColorSetButton:
 		text: 'Black'
-		background_color: [0,0,0,1]
+		background_color: [.1,.1,.1,1]
 	BkgdColorSetButton:
 		text: 'Red'
-		background_color: [1,0,0,1]
+		background_color: [.9,.08,.24,1]
 	BkgdColorSetButton:
 		text: 'Blue'
-		background_color: [0,0,1,1]
+		background_color: [.25,.4,.88,1]
 	BkgdColorSetButton:
-		text: 'Green'
-		background_color: [0,1,0,1]
+		text: 'Green' #lime green
+		color: [0,0,0,1]
+		background_color: [.2,.8,.2,1]
 	BkgdColorSetButton:
 		text: 'Yellow'
 		color: [0,0,0,1]
 		background_color: [1,1,0,1]
 	BkgdColorSetButton:
 		text: 'Cyan'
+		color: [0,0,0,1]
 		background_color: [0,1,1,1]
 	BkgdColorSetButton:
-		text: 'Purple'
+		text: 'Purple' #magenta
+		color: [0,0,0,1]
 		background_color: [1,0,1,1]
 
 <ColorSetButton>:
+	canvas:
+		Color:
+			rgba: 0, 0, 0, 1
+		Line:
+    		rectangle: self.x,self.y,self.width,self.height
+		Color:
+			rgba: [x*.5 for x in self.background_color]
+		Line:
+			width: 1
+			points: self.x + 1,self.y + 1,self.right - 1, self.y + 1,self.right - 1,self.top - 1
+		Color:
+			rgba: [ .5 + x*.5 for x in self.background_color]
+		Line:
+			width:1
+			points: self.x + 1,self.y + 1,self.x + 1, self.top -1,self.right - 1,self.top - 1
+
 	size_hint_y: None 
 	height: self.texture_size[1] * 1.5
 	on_press: self.updateButton()
+	background_color: [.4,.4,.4,1]
+	background_normal: ''
 
 <BkgdColorSetButton>:
 	canvas:

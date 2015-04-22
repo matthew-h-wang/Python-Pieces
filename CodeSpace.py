@@ -109,8 +109,10 @@ class CodeLine(StackLayout):
 
 class BlockSpace(StackLayout):
 	workspace = ObjectProperty(None)
+	fontsize = NumericProperty(24)
 	def __init__(self, workspace, **kw):
 		super(BlockSpace, self).__init__(**kw)
 		self.workspace = workspace
+		self.fontsize = workspace.fontsize
 
 
