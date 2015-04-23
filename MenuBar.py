@@ -4,9 +4,11 @@ from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import ObjectProperty, StringProperty, BooleanProperty
+from kivy.uix.popup import Popup
 from kivy.uix.image import Image
 from kivy.core.window import Window
 from kivy.uix.label import Label
+from kivy.uix.scrollview import ScrollView
 
 from CodePiece import CodePieceGenerator, CodePieceGeneratorLimited, CodePiece
 from CodeSpace import CodeLinePlus
@@ -73,6 +75,8 @@ class MenuBar(FloatLayout):
 		self.redoStack = []
 		self.currentVersion = Version(lines = 15)
 		self.coderunner = CodeRunner()
+		helpScreen = HelpScreen()
+		self.helpPopup = HelpPopup(content=helpScreen)
 
 		self._keyboard = Window.request_keyboard(self._keyboard_closed, self)
 		self._keyboard.bind(on_key_down=self._on_keyboard_down)
@@ -82,6 +86,8 @@ class MenuBar(FloatLayout):
 		self.rshiftPress = False
 		self.shiftPress = False
 
+	def displayHelp(self):
+		self.helpPopup.open()
 
 	def toggleBlockMaker(self):
 		self.parent.workspace.toggleBlockMaker()
@@ -415,4 +421,16 @@ class MenuButton(Button):
 	pressable = BooleanProperty(True)
 
 class MenuSpacer(Widget):
+	pass
+
+class HelpPopup(Popup):
+	pass
+class HelpScreen(ScrollView):
+	pass
+
+
+class HelpLabel(Label):
+	pass
+
+class HelpImage(Image):
 	pass

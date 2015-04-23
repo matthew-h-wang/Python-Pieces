@@ -78,6 +78,13 @@
 
 			multiline: False
 			write_tab: False
+		MenuSpacer:
+
+		MenuButton:
+			id: helpB 
+			pressable: True
+			on_release: root.displayHelp()
+			imageSource: 'icons/Help-icon.png'
 
 #	MenuButton:
 #		id: settingsB
@@ -101,3 +108,121 @@
 	size_hint: (None,1)
 	width: root.height / 3
 
+<HelpPopup>:
+	title: "Python Pieces Help"
+	size_hint: (.75,.75)
+	pos_hint: {'center_x':.5, 'center_y':.5}
+<HelpScreen>:
+	size_hint: (1,1)
+	do_scroll_x: False
+	do_scroll_y: True
+	scroll_timeout: 50
+
+	StackLayout:
+		orientation: 'lr-tb'
+		size_hint: (1, None)
+		height: self.minimum_height
+		HelpLabel:
+			text: "    "
+		HelpLabel:
+			text: "    Python Pieces is an educational programming environment which features drag-and-drop code blocks. It is also touch-compatible! Here's a brief explanation of how to use Python Pieces, including the different buttons on the Menu Bar. For a more detailed usage manual, please consult the README."
+		HelpLabel:
+			text: "    "
+		HelpLabel:
+			text: "[b]Menu Bar Buttons[/b]"
+			font_size: 20
+		HelpLabel:
+			text: "    "
+		HelpImage:
+			source: 'icons/Open-File-icon.png'
+		HelpLabel:
+			text: "    Press [b]Open File[b] to browse for and load a Python Pieces Project (.pyp) or a Python Pieces Template (.pypt)."
+		HelpImage:
+			source: 'icons/Refresh-icon.png'
+		HelpLabel:
+			text: "    Press [b]Refresh From Template[/b] to reset the Workspace to the Template that the Project was originally loaded from, if any. (Don't worry if you accidentally click this -- you can always hit [b]Undo[/b]!)"
+		HelpImage:
+			source: 'icons/Save-icon.png'
+		HelpLabel:
+			text: "    Press [b]Save File[/b] to save the project to the current Python Pieces File (.pyp) file. You can also press [b]Ctrl-S[/b] to save. [i](Note that if the project was loaded from a Python Pieces Template (.pypt) or any other file format, the project will be saved to .pyp file format, possibly overwriting existing an existing file.)[/i]"
+		HelpImage:
+			source: 'icons/Save-As-icon.png'
+		HelpLabel:
+			text: "    Press [b]Save File As...[/b] to save the project with a given name and extension. You can also press [b]Ctrl-Shift-S[/b] to save as. [i](Note that renaming the project may disrupt Refresh From Template functionality, as well as code insertion when running code.) [/i]"
+		HelpImage:
+			source: 'icons/Bricks-icon.png'
+		HelpLabel:
+			text: "    Press [b]Toggle Block Maker[/b] to show or hide the Block Maker, which can create and destroy custom Code Blocks that will be put in the Block Box."
+		HelpImage:
+			source: 'icons/Undo-icon.png'
+		HelpLabel:
+			text: "    Press [b]Undo[/b] to undo the last change made to the Workspace. You can also press [b]Ctrl-Z[/b] or [b]Ctrl-U[/b], although when entering text into the Block Maker [b]Ctrl-Z[/b] will only undo changes in typed text."
+		HelpImage:
+			source: 'icons/Redo-icon.png'
+		HelpLabel:
+			text: "    Press [b]Redo[/b] to Redo the last Undo made to the Workspace. You can also press [b]Ctrl-R[/b] or [b]Ctrl-Y[/b], although when entering text into the Block Maker [b]Ctrl-R[/b] will only redo changes in typed text."
+		HelpImage:
+			source: 'icons/Run-icon.png'
+		HelpLabel:
+			text: "    Press [b]Run Program[/b] to compile the project code and run the program in a new safe Command Prompt. Any arguments written in the [b]Args:[/b] box will be passed to the program."
+		HelpLabel:
+			text: "    "
+		HelpLabel:
+			text: "    You can also adjust the [b]Font Size Slider[/b] to change the display font size in the Workspace."
+		HelpLabel:
+			text: "    "
+		HelpLabel:
+			text: "[b]Getting Around The Workspace[/b]"
+			font_size: 24
+		HelpLabel:
+			text: "    "
+		HelpLabel:
+			text: "    The Python Pieces Workspace is made up of two parts: the Block Box on the left, and the Code Space on the right. You can drag the divider in the middle to adjust how large each side is. Those Blocks can be dragged over to the Code Space to construct the program. "
+		HelpLabel:
+			text: "    "
+		HelpLabel:
+			text: "[b]The Block Box[/b]"
+			font_size: 20
+		HelpLabel:
+			text: "    "
+		HelpLabel:
+			text: "    The Block Box contains the Code Blocks used in your project. Code Blocks inside the Block Box can be rearranged simply by dragging and dropping inside the Block Box. Those Blocks can be dragged over to the Code Space to construct the program. Certain Blocks can be limited in the number of times it is used in the program. If the Block Maker is open, you can remove a Block from the Block Box by dragging and dropping it over the Block Maker"
+		HelpLabel:
+			text: "    "
+		HelpLabel:
+			text: "[b]The Code Space[/b]"
+			font_size: 20
+		HelpLabel:
+			text: "    "
+		HelpLabel:
+			text: "    Blocks in the Code Space go into Code Lines, and can be moved between and around inside each Line. Drag a block from the Code Space outside the Code Space to remove it. Double tap the number on the left of a Line to add another Line below. Drag the number to move a Line to another spot. Click the [b]X[/b] on the right of a Line to remove it and all the Blocks inside."
+		HelpLabel:
+			text: "[b]The Block Maker[/b]"
+			font_size: 20
+		HelpLabel:
+			text: "    "
+		HelpLabel:
+			text: "    The Block Maker appears above the Block Box when the [b]Toggle Block Maker[/b] button is pressed. You can create a new Code Block in the Block Box by entering text in the large text box and pressing [b]Make[/b] or hitting [b]Enter[/b]. You can also set a limited number of uses by clicking the [b]Limit[/b] button and entering a number in the adjacent space. Pressing the [b]Color[/b] button displays options for text color and background color of the Block; the create Block will have the text and background color of the [b]Color[/b] button."
+		HelpLabel:
+			text: "    "
+
+
+
+<HelpLabel>:
+	size_hint_y: None
+	size_hint_x: 1
+	text_size: self.width, None
+	height: self.texture_size[1]
+	halign: 'left'
+	valign: 'top'
+	markup: True
+#	canvas:
+#		Color:
+#			rgba: .5,.5,.5,1
+#		Line:
+#           rectangle: self.x,self.y,self.width,self.height
+
+<HelpImage>:
+	size_hint: (None,None)
+	width: 24
+	height:24

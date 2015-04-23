@@ -96,7 +96,8 @@ class FontSizeSlider(Slider):
 class PythonPiecesApp(App):
 	def build(self):
 		Window.set_icon('icons/Large-Python-icon.png')
-		self.icon = 'icons/Large-Python-icon'
+		self.title = 'Python Pieces'
+#		self.icon = 'icons/Large-Python-icon'
 
 if __name__ == '__main__':
 	PythonPiecesApp().run()
