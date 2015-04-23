@@ -1,0 +1,78 @@
+#:kivy 1.9.0
+
+	# YAYYYYYY! GO MATT! XP
+# o_o
+
+
+<CodePieceGenerator>:
+
+	size_hint: None, None
+	text: self.codetext
+	canvas.before:
+		Color:
+			rgba: root.bkgdColor
+		Rectangle:
+			pos: self.pos
+			size: self.size
+		Color:
+			rgba: [x*.5 for x in root.bkgdColor[0:3]] + root.bkgdColor[3:4]
+		Line:
+			width: 1
+#			points: self.x + 1,self.y + 1,self.right - 1, self.y + 1,self.right - 1,self.top - 1
+			points: self.x ,self.y ,self.right , self.y ,self.right ,self.top 
+
+		Color:
+			rgba: [ .5 + x*.5 for x in root.bkgdColor[0:3]] + root.bkgdColor[3:4]
+		Line:
+			width:1
+#			points: self.x + 1,self.y + 1,self.x + 1, self.top -1,self.right - 1,self.top - 1
+			points: self.x ,self.y ,self.x , self.top ,self.right ,self.top 
+
+	size: self.texture_size
+
+<CodePieceGeneratorLimited>:
+	text: self.codetext + ' (x' + str(root.count) + ')'
+
+<DragSilhouette>:
+	canvas:
+		Color:
+			rgba: .5, .5, .5, .5
+		Line:
+    		rectangle: self.x,self.y,self.width,self.height
+	my_label: my_label
+	size_hint: None, None
+	size: my_label.size
+	pos_hint: {'x': 0, 'y': 0}
+	do_rotation: False
+	do_scale: False
+	auto_bring_to_front: True
+
+	opacity: .5
+
+	Label:
+		canvas.before:
+			Color:
+				rgba: root.bkgdColor
+			Rectangle:
+				pos: self.pos
+				size: self.size
+			Color:
+				rgba: [x*.5 for x in root.bkgdColor[0:3]] + root.bkgdColor[3:4]
+			Line:
+				width: 1
+			#	points: self.x + 1,self.y + 1,self.right - 1, self.y + 1,self.right - 1,self.top - 1
+				points: self.x ,self.y ,self.right , self.y ,self.right ,self.top 
+			Color:
+				rgba: [ .5 + x*.5 for x in root.bkgdColor[0:3]] + root.bkgdColor[3:4]
+			Line:
+				width:1
+#				points: self.x + 1,self.y + 1,self.x + 1, self.top -1,self.right - 1,self.top - 1
+				points: self.x ,self.y ,self.x , self.top ,self.right ,self.top 
+
+		id: my_label
+		color: root.color
+		font_size: root.font_size
+		font_name: root.font_name
+		size: self.texture_size
+		text: root.labeltext
+

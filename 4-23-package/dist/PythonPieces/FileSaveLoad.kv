@@ -1,0 +1,104 @@
+#:kivy 1.0.9
+
+<MenuBar>:
+
+	loadB: loadB
+	reloadB: reloadB
+	saveB: saveB
+	saveAsB: saveAsB
+	undoB: undoB
+	redoB: redoB
+	runB: runB
+#	stopB: stopB
+#	settingsB: settingsB
+	argsInput: argsInput
+
+	height: 24
+	BoxLayout:
+		orientation: 'horizontal'
+		size_hint: (1,1)
+		pos_hint: {'x':0, 'y':0}
+
+
+		Image:
+			size_hint: (None,1)
+			width: self.height
+			source: 'icons/Python-icon.png'
+
+		MenuButton:
+			id: loadB
+			on_release: root.loadVersion()
+			imageSource: 'icons/Open-File-icon.png'
+		MenuButton:
+			id: reloadB
+			pressable: False
+			on_release: root.reloadFromTemplate()
+			imageSource: 'icons/Refresh-icon.png'
+		MenuButton:
+			id: saveB
+			pressable: False
+			on_release: root.saveCurrentVersion()
+			imageSource: 'icons/Save-icon.png'
+		MenuButton:
+			id: saveAsB
+			on_release: root.saveCurrentVersionAs()
+			imageSource: 'icons/Save-As-icon.png'
+		MenuSpacer:
+
+		MenuButton:
+			id: toggleMakerB
+			on_release: root.toggleBlockMaker()
+			imageSource: 'icons/Bricks-icon.png'
+
+		MenuSpacer:
+
+		MenuButton:
+			id: undoB
+			pressable: False
+			on_release: root.undoLast()
+			imageSource: 'icons/Undo-icon.png'
+		MenuButton:
+			id: redoB
+			pressable: False
+			on_release: root.redoLast()
+			imageSource: 'icons/Redo-icon.png'
+		MenuSpacer:
+
+		MenuButton:
+			id: runB
+			pressable: False
+			on_release: root.saveAndRunCode()
+			imageSource: 'icons/Run-icon.png'
+		Label:
+			size_hint: (None,1)
+			width: self.texture_size[0]
+			text: ' Args: '
+		TextInput:
+			id: argsInput
+			size_hint: (None,1)
+
+			multiline: False
+			write_tab: False
+
+#	MenuButton:
+#		id: settingsB
+#		on_release: root.settingspanel.open(self)
+#		imageSource: 'icons/Settings-icon.png'
+#		pos_hint: {'right':1, 'y':0}
+
+<MenuButton>:
+
+	size_hint: (None,1)
+	width: self.height
+	on_pressable: image.color =  [1,1,1,1] if self.pressable else [.3,.3,.3,.5]
+
+	Image: 
+		id: image
+		source: root.imageSource
+		center_x: self.parent.center_x
+		center_y: self.parent.center_y
+
+<MenuSpacer>:
+	size_hint: (None,1)
+	width: root.height / 3
+

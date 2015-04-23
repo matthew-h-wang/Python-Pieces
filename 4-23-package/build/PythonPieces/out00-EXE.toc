@@ -1,0 +1,9 @@
+('C:\\Users\\Matthew\\Documents\\GitHub\\Python-Pieces\\4-23-package\\build\\PythonPieces\\PythonPieces.exe',
+ True,
+ False,
+ 'C:\\Users\\Matthew\\Documents\\GitHub\\Python-Pieces\\4-23-package\\icons\\PythonIco.ico',
+ None,
+ [],
+ None,
+ False,
+ 1429774021L)
