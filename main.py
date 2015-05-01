@@ -1,5 +1,6 @@
 from kivy.app import App
 from kivy.core.window import Window
+from kivy.config import Config
 from kivy.uix.widget import Widget
 from kivy.properties import ObjectProperty, NumericProperty, StringProperty
 from kivy.uix.floatlayout import FloatLayout
@@ -7,6 +8,8 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.splitter import Splitter
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.slider import Slider
+
+
 
 from CodePiece import CodePiece, CodePieceGenerator, CodePieceGeneratorLimited, DragSilhouette
 from CodeSpace import CodeLine, CodeSpace, BlockSpace, CodeLinePlus
@@ -97,6 +100,7 @@ class PythonPiecesApp(App):
 	def build(self):
 		Window.set_icon('icons/Large-Python-icon.png')
 		self.title = 'Python Pieces'
+		Config.set('input', 'mouse', 'mouse,disable_multitouch')
 #		self.icon = 'icons/Large-Python-icon'
 
 if __name__ == '__main__':

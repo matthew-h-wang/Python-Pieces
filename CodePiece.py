@@ -75,16 +75,20 @@ class CodePieceGeneratorLimited(CodePieceGenerator):
 		self.count = max_count
 
 
-
 	def reclaimPiece(self):
 		self.count += 1
 
 	def decountPiece(self):
 		self.count -= 1
 
-	def on_touch_down(self, touch):
-		if self.count > 0:
-			super(CodePieceGeneratorLimited, self).on_touch_down(touch)
+	def whenRemoved(self):
+		#remove all code pieces associated with generator
+		for codelineplus in self.codespace.children :
+			codeline = codelineplus.codeline
+			for piece in codeline.children :
+				if piece.generator == self:
+					self.reclaimPiece()
+					codeline.remove_widget(piece)
 
 class CodePiece(CodePieceGenerator):
 	def __init__(self, generator,**kw):
@@ -133,6 +137,9 @@ class DragSilhouette(Scatter):
 		self.bkgdColor = source.bkgdColor
 
 	def on_touch_up(self,touch):
+		if not self.parent:
+			return
+
 		tx, ty = touch.x, touch.y
 		if not touch.grab_current == self:
 			return super(DragSilhouette, self).on_touch_up(touch)
@@ -197,7 +204,8 @@ class DragSilhouette(Scatter):
 					break
 
 			#If dropped in codespace, create new piece 
-			if newloc:	
+			if newloc and self.generator.count != 0:
+
 				ntx, nty = newloc.to_widget(tx, ty)
 				# piece indices goes from bottom to top, right to left
 				index = 0
@@ -236,6 +244,7 @@ class DragSilhouette(Scatter):
 				elif blockmaker.parent and blockmaker.collide_point(ntx2, nty2):
 					blockspace.remove_widget(self.generator)
 					self.generator.whenRemoved()
+					blockmaker.reclaimBlock(self.generator)
 					self.workspace.updateVersion()
 
 

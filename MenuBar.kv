@@ -9,7 +9,6 @@
 	undoB: undoB
 	redoB: redoB
 	runB: runB
-#	settingsB: settingsB
 	argsInput: argsInput
 
 	height: 24
@@ -86,12 +85,6 @@
 			on_release: root.displayHelp()
 			imageSource: 'icons/Help-icon.png'
 
-#	MenuButton:
-#		id: settingsB
-#		on_release: root.settingspanel.open(self)
-#		imageSource: 'icons/Settings-icon.png'
-#		pos_hint: {'right':1, 'y':0}
-
 <MenuButton>:
 
 	size_hint: (None,1)
@@ -136,11 +129,11 @@
 		HelpImage:
 			source: 'icons/Open-File-icon.png'
 		HelpLabel:
-			text: "    Press [b]Open File[b] to browse for and load a Python Pieces Project (.pyp) or a Python Pieces Template (.pypt)."
+			text: "    Press [b]Open File[/b] to browse for and load a Python Pieces Project (.pyp) or a Python Pieces Template (.pypt)."
 		HelpImage:
 			source: 'icons/Refresh-icon.png'
 		HelpLabel:
-			text: "    Press [b]Refresh From Template[/b] to reset the Workspace to the Template that the Project was originally loaded from, if any. (Don't worry if you accidentally click this -- you can always hit [b]Undo[/b]!)"
+			text: "    Press [b]Reset To Template[/b] to reset the Workspace to the Template that the Project was originally loaded from, if any. You can also press [b]Ctrl-Shift-Backspace[/b] to reset. (Don't worry if you accidentally click this -- you can always hit [b]Undo[/b]!)"
 		HelpImage:
 			source: 'icons/Save-icon.png'
 		HelpLabel:
@@ -164,7 +157,7 @@
 		HelpImage:
 			source: 'icons/Run-icon.png'
 		HelpLabel:
-			text: "    Press [b]Run Program[/b] to compile the project code and run the program in a new safe Command Prompt. Any arguments written in the [b]Args:[/b] box will be passed to the program."
+			text: "    Press [b]Run Program[/b] to compile the project code into a .py Python file and run the program in a new safe Command Prompt. Any arguments written in the [b]Args:[/b] box will be passed to the program. You can also press [b]Ctrl-Enter[/b] to run."
 		HelpLabel:
 			text: "    "
 		HelpLabel:
@@ -177,7 +170,7 @@
 		HelpLabel:
 			text: "    "
 		HelpLabel:
-			text: "    The Python Pieces Workspace is made up of two parts: the Block Box on the left, and the Code Space on the right. You can drag the divider in the middle to adjust how large each side is. Those Blocks can be dragged over to the Code Space to construct the program. "
+			text: "    The Python Pieces Workspace is made up of two parts: the Block Box on the left, and the Code Space on the right. You can drag the divider in the middle to adjust how large each side is. Code Blocks from the Block Box can be dragged over to the Code Space to construct the program. "
 		HelpLabel:
 			text: "    "
 		HelpLabel:
@@ -186,7 +179,7 @@
 		HelpLabel:
 			text: "    "
 		HelpLabel:
-			text: "    The Block Box contains the Code Blocks used in your project. Code Blocks inside the Block Box can be rearranged simply by dragging and dropping inside the Block Box. Those Blocks can be dragged over to the Code Space to construct the program. Certain Blocks can be limited in the number of times it is used in the program. If the Block Maker is open, you can remove a Block from the Block Box by dragging and dropping it over the Block Maker"
+			text: "    The Block Box contains the Code Blocks used in your project. Code Blocks inside the Block Box can be rearranged simply by dragging and dropping inside the Block Box. Those Blocks can be dragged over to the Code Space to construct the program. Certain Blocks can be limited in the number of times it is used in the program. If the Block Maker is open, you can remove/edit a Block from the Block Box by dragging it back into the Block Maker"
 		HelpLabel:
 			text: "    "
 		HelpLabel:
@@ -197,12 +190,14 @@
 		HelpLabel:
 			text: "    Blocks in the Code Space go into Code Lines, and can be moved between and around inside each Line. Drag a block from the Code Space outside the Code Space to remove it. Double tap the number on the left of a Line to add another Line below. Drag the number to move a Line to another spot. Click the [b]X[/b] on the right of a Line to remove it and all the Blocks inside."
 		HelpLabel:
+			text: "    "
+		HelpLabel:
 			text: "[b]The Block Maker[/b]"
 			font_size: 20
 		HelpLabel:
 			text: "    "
 		HelpLabel:
-			text: "    The Block Maker appears above the Block Box when the [b]Toggle Block Maker[/b] button is pressed. You can create a new Code Block in the Block Box by entering text in the large text box and pressing [b]Make[/b] or hitting [b]Enter[/b]. You can also set a limited number of uses by clicking the [b]Limit[/b] button and entering a number in the adjacent space. Pressing the [b]Color[/b] button displays options for text color and background color of the Block; the create Block will have the text and background color of the [b]Color[/b] button."
+			text: "    The Block Maker appears above the Block Box when the [b]Toggle Block Maker[/b] button is pressed. You can create a new Code Block in the Block Box by entering text in the large text box and pressing [b]Make[/b] or hitting [b]Enter[/b]. You can also set a limited number of uses by entering a number next to [b]Limit:[/b]. Pressing the [b]Color[/b] button displays options for text color and background color of the Block; the create Block will have the text and background color of the [b]Color[/b] button."
 		HelpLabel:
 			text: "    "
 

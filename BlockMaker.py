@@ -2,7 +2,6 @@ from kivy.lang import Builder
 from kivy.uix.widget import Widget
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
-from kivy.uix.togglebutton import ToggleButton
 from kivy.properties import ObjectProperty
 from kivy.uix.gridlayout import GridLayout
 
@@ -17,7 +16,6 @@ Builder.load_file("BlockMaker.kv")
 class BlockMaker(GridLayout):
 	workspace = ObjectProperty(None)
 	textinput = ObjectProperty(None)
-	togglelimit = ObjectProperty(None)
 	limittext = ObjectProperty(None)
 	colorbutton = ObjectProperty(None)
 	colorset = ObjectProperty(None)
@@ -49,10 +47,10 @@ class BlockMaker(GridLayout):
 			return
 
 		gen = None
-		if self.togglelimit.state == 'normal':
+		if self.limittext.text == '':
 			gen = CodePieceGenerator(workspace=self.workspace, start_text = self.textinput.text,
 				color = self.colorbutton.color, bkgdColor = self.colorbutton.background_color)
-		elif self.limittext.text != '':
+		elif int(self.limittext.text) != 0:
 			gen = CodePieceGeneratorLimited(workspace=self.workspace, start_text = self.textinput.text, 
 				color = self.colorbutton.color, bkgdColor = self.colorbutton.background_color, max_count= int(self.limittext.text))
 		else:
@@ -60,6 +58,14 @@ class BlockMaker(GridLayout):
 		self.workspace.blockspace.add_widget(gen)
 		self.textinput.text = ''
 		self.workspace.updateVersion()
+	def reclaimBlock(self, block):
+		self.textinput.text = block.codetext
+		self.colorbutton.color = block.color
+		self.colorbutton.background_color = block.bkgdColor
+		if block.count == -1:
+			self.limittext.text = ''
+		else:
+			self.limittext.text = str(block.count)
 
 class MyInput(TextInput):
 	pass

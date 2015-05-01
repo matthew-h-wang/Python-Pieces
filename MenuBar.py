@@ -302,10 +302,7 @@ class MenuBar(FloatLayout):
 				if (self.shiftPress or self.rshiftPress):
 					self.reloadFromTemplate()
 			elif keycode[1] == 'enter':
-				if (self.shiftPress or self.rshiftPress):
-					self.stopCode()
-				else:
-					self.saveAndRunCode()
+				self.saveAndRunCode()
 		return True
 
 

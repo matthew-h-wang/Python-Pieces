@@ -13,7 +13,7 @@ exe = EXE(pyz,
           debug=False,
           strip=None,
           upx=True,
-          console=True , icon='C:\\Users\\Matthew\\Documents\\GitHub\\Python-Pieces\\4-23-package\\icons\\PythonIco.ico')
+          console=False , icon='C:\\Users\\Matthew\\Documents\\GitHub\\Python-Pieces\\4-23-package\\icons\\PythonIco.ico')
 coll = COLLECT(exe, Tree('./'),
                a.binaries,
                a.zipfiles,
